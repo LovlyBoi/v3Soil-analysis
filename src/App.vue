@@ -1,26 +1,101 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <el-container>
+    <el-header>
+      <!-- 头部组件 -->
+      <header-com></header-com>
+    </el-header>
+    <el-container>
+      <el-aside width="15%">
+        <!-- 侧边栏组件 -->
+        <side-bar></side-bar>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <!-- 展示面板，一级路由 -->
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+        </el-main>
+      </el-container>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import {onMounted} from 'vue'
+import headerCom from "./components/HeaderCom";
+import sideBar from "./components/SideBar";
+import { checkCookieLogin } from "./api"
+import { setLogin } from "./hooks/useUserState"
+ 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    headerCom,
+    sideBar,
+  },
+  setup(){
+    // 尝试 cookie 登录
+    async function cookieLogin() {
+      // console.log("正在 cookie 登录...");
+      let res = await checkCookieLogin();
+      try {
+        if (res.data && res.data.code == "202") {
+          console.warn("cookie 登陆失败", res.data);
+
+          return;
+        } else if (res.data && res.data.code == "201") {
+          setLogin(true);
+          // setUserInfo(this.loginForm);
+        }
+      } catch (e) {
+        console.warn("cookie 登录出错", e);
+      }
+    }
+
+    onMounted(() => {
+      cookieLogin()
+    })
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.el-header {
+  background-color: #e9eef3;
+  color: #222;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  line-height: 60px;
+}
+
+.el-aside {
+  color: #222;
+  text-align: center;
+}
+
+.el-main {
+  margin-top: 3px;
+  background-color: whitesmoke;
+  color: #222;
+  text-align: center;
+  line-height: 18px;
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
+
+.pop-up-enter-from,
+.pop-up-leave-to {
+  top: 100vh !important;
+  opacity: 0 !important;
+  transform: scale(0.2) translateX(-200px) !important;
+}
+
+.pop-up-enter-active,
+.pop-up-leave-active {
+  transition: all 0.3s ease-out;
 }
 </style>
