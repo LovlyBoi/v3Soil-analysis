@@ -5,6 +5,8 @@ const userState = ref({
   // 用户信息
   userInfo: {
     username: '',
+    // 用户身份，默认最低级用户
+    role: 'admin'
   },
   // 是否已经登录
   isLogin: false
@@ -13,13 +15,12 @@ const userState = ref({
 // 设置登录接口
 function setLogin(state){
   userState.value.isLogin = state
-  // console.log(userState)
 }
 
 // 提交用户信息接口
 function setUserInfo(userinfo){
-  userState.value.userInfo.username = userinfo.username || ""
-  // console.log("userInfo: ",this.state.userInfo)
+  userState.value.userInfo.username = userinfo.username
+  userState.value.userInfo.role = userinfo.role
 }
 
 

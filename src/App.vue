@@ -24,19 +24,23 @@
 </template>
 
 <script>
-import {onMounted} from 'vue'
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import headerCom from "./components/HeaderCom";
 import sideBar from "./components/SideBar";
-import { checkCookieLogin } from "./api"
-import { setLogin } from "./hooks/useUserState"
- 
+import { checkCookieLogin } from "./api";
+import { setLogin } from "./hooks/useUserState";
+
 export default {
   name: "App",
   components: {
     headerCom,
     sideBar,
   },
-  setup(){
+  setup() {
+    // 拿到Router对象
+    const router = useRouter()
+
     // 尝试 cookie 登录
     async function cookieLogin() {
       // console.log("正在 cookie 登录...");
@@ -53,12 +57,14 @@ export default {
       } catch (e) {
         console.warn("cookie 登录出错", e);
       }
+      // 跳转页面到/fun1
+      router.replace('/fun1')
     }
 
     onMounted(() => {
-      cookieLogin()
-    })
-  }
+      cookieLogin();
+    });
+  },
 };
 </script>
 

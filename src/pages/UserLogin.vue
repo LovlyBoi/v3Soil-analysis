@@ -52,9 +52,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { checkUser } from "../api";
-import { ElMessage } from "element-plus";
 import { setLogin, setUserInfo } from "../hooks/useUserState";
 import { setCurrEl } from "../hooks/useCurrEl";
+import message from "../hooks/useMessage";
 
 export default {
   name: "UserLogin",
@@ -95,30 +95,36 @@ export default {
     async function login(userName, passWord) {
       // 禁用表单
       disablebtn.value = true;
-      // api 调用
-      let userInfo = {
+      // 要提交的用户信息
+      let userData = {
         username: userName,
         password: passWord,
         rememberMe: remember.value,
       };
-      let res = await checkUser(userInfo);
+      // 账号密码登录，发送请求
+      let res = await checkUser(userData);
+      // 解禁按钮
       disablebtn.value = false;
-
-      // console.log("res-----",res);
 
       try {
         if (res.data && res.data.code == 202) {
+          // 密码错误
           loginForm.value.pass = "";
         } else if (res.data && res.data.code == 200) {
-          // 禁用表单
-          // this.disablebtn = true;
+          // console.log('------', res.data.data);
+          
+          // 登陆成功
           // 更改登录信息
           setLogin(true);
-          // 路由导航到 fun1
+          // 路由导航到 fun1，设置高亮
           router.replace("/fun1");
           setCurrEl(1);
-          // 提交用户信息到 store
-          setUserInfo(loginForm.value);
+          // 提交用户信息到 userState
+          let userinfo = {
+            username: loginForm.value.username,
+            role: res.data.data.roles,
+          };
+          setUserInfo(userinfo);
           // 提交用户信息到 localStorage
           if (window.localStorage) {
             let username = loginForm.value.username || "";
@@ -126,11 +132,7 @@ export default {
           }
         }
       } catch (e) {
-        ElMessage({
-          message: "好像哪里出错了呢",
-          type: "error",
-          duration: 1500,
-        });
+        message("error", "好像哪里出错了呢");
         console.warn(e);
       }
     }
@@ -141,11 +143,7 @@ export default {
           // 登录逻辑
           login(loginForm.value.username, loginForm.value.pass);
         } else {
-          ElMessage({
-            message: "请完善信息哦",
-            type: "error",
-            duration: 1500,
-          });
+          message("error", "请完善信息哦");
           return;
         }
       });

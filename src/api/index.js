@@ -3,7 +3,11 @@ import { ElMessage } from 'element-plus'
 
 
 axios.defaults.timeout = 8000;
+
+// 生产版本 baseURL
 // axios.defaults.baseURL = "http://120.79.189.55:10086/content1-2.0"
+
+// 开发版本 baseURL
 axios.defaults.baseURL = "/api"
 
 // 响应拦截器
@@ -73,7 +77,7 @@ function checkUser(userInfo) {
 function register(userInfo) {
   return axios({
     method: 'POST',
-    url: '/registerUser',
+    url: '/registerUsers',
     data: {
       username: userInfo.username,
       password: userInfo.password,
@@ -116,22 +120,10 @@ function checkIDCard(ID) {
   })
 }
 
-// // 登录查询
-// function checkUser(username, password) {
-//   return axios({
-//     method: 'GET',
-//     url: 'http://120.79.189.55:8080/content1-2.0/login',
-//     params: {
-//       username,
-//       password
-//     }
-//   })
-// }
-
 // fun1查询
 function sendJingWei(jing, wei, crop) {
   return axios({
-    methods: 'GET',
+    method: 'GET',
     url: '/fun1',
     params: {
       longitude: jing,
@@ -144,7 +136,7 @@ function sendJingWei(jing, wei, crop) {
 // 发送fun2查询
 function sendInfo(MEN, MOP, MOK, MOM, crop) {
   return axios({
-    methods: 'GET',
+    method: 'GET',
     url: '/fun2',
     params: {
       mea_Effective_N: MEN,
@@ -156,6 +148,19 @@ function sendInfo(MEN, MOP, MOK, MOM, crop) {
   })
 }
 
+function updateExpertSuggest({jing, wei, name, crop, suggest}){
+  return axios({
+    method: 'POST',
+    url: '/newExpertSuggest',
+    data: {
+      longitude: jing,
+      latitude: wei,
+      elementName: name,
+      cropName: crop,
+      suggestValue: suggest,
+    }
+  })
+}
 
 export {
   checkUser,
@@ -164,5 +169,6 @@ export {
   checkUsernameRepeat,
   checkIDCard,
   sendJingWei,
-  sendInfo
+  sendInfo,
+  updateExpertSuggest,
 }

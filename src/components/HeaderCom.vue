@@ -20,10 +20,22 @@
         >注册</a
       >
     </div>
-    
+
     <div v-else class="showHello">
       <a href="javascript:;" style="cursor: auto">你好{{ "，" + username }}</a>
-      <a href="javascript:;" id="exit" @click="exitLogin">退出登录</a>
+      <!-- <a href="javascript:;" id="exit" @click="exitLogin">退出登录</a> -->
+      <el-popconfirm
+        confirm-button-text="退出"
+        cancel-button-text="取消"
+        :icon="InfoFilled"
+        icon-color="red"
+        title="确定要退出登录吗？"
+        @confirm="exitLogin"
+      >
+        <template #reference>
+          <el-button type="text">退出登录</el-button>
+        </template>
+      </el-popconfirm>
     </div>
     <h1 class="title">土壤成分分析</h1>
   </div>
@@ -34,6 +46,8 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { currEl, setCurrEl } from "../hooks/useCurrEl";
 import { userState, setLogin } from "../hooks/useUserState";
+import message from "../hooks/useMessage"
+
 export default {
   name: "Header",
   setup() {
@@ -51,6 +65,7 @@ export default {
     // 退出登录
     function exitLogin() {
       setLogin(false);
+      message('success', '退出登录')
     }
 
     // 注册点击事件
@@ -61,7 +76,7 @@ export default {
       router.push("/register").catch((e) => e);
     }
 
-    // 优先去本地存储中找名字，没有再去 store 找，再没有返回 “用户”
+    // 优先去本地存储中找名字，没有再去 userState 找，再没有返回 “尊敬的客户”
     const username = computed(() => {
       return (
         window.localStorage.getItem("username") ||
@@ -88,7 +103,7 @@ export default {
   justify-content: space-between;
 }
 
-.title{
+.title {
   font-size: 2vw;
   display: inline-block;
   position: absolute;

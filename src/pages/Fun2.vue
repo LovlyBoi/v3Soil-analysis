@@ -154,10 +154,10 @@
         size="medium"
         border
       >
-        <el-descriptions-item label="碱解氮的参考值">
+        <el-descriptions-item width="150px" label="碱解氮的参考值">
           {{ sug_Effective_N }}
         </el-descriptions-item>
-        <el-descriptions-item label="有效磷的参考值">
+        <el-descriptions-item width="150px" label="有效磷的参考值">
           {{ sug_Olsen_P }}
         </el-descriptions-item>
         <el-descriptions-item label="速效钾的参考值">
@@ -174,8 +174,8 @@
 <script>
 import { ref, reactive } from "vue";
 import { sendInfo } from "../api";
-import { ElMessage } from "element-plus";
 import { userState } from "../hooks/useUserState";
+import message from "../hooks/useMessage"
 
 export default {
   name: "Fun2",
@@ -248,12 +248,7 @@ export default {
             return !/^\d+$|^\d*\.\d+$/g.test(item);
           })
         ) {
-          ElMessage({
-            center: true,
-            message: "请输入正确格式的值",
-            type: "error",
-            duration: 1500,
-          });
+          message('error', "请输入正确格式的值")
           return false;
         }
         // 格式合格
@@ -278,12 +273,7 @@ export default {
 
       // 判断是否登录
       if (!userState.value.isLogin) {
-        ElMessage({
-          center: true,
-          message: "请先登录",
-          type: "error",
-          duration: 1500,
-        });
+        message('error', '请先登录')
         return;
       }
 
