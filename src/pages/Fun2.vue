@@ -173,7 +173,7 @@
 
 <script>
 import { ref, reactive } from "vue";
-import { sendInfo } from "../api";
+import { queryFun2 } from "../api";
 import { userState } from "../hooks/useUserState";
 import message from "../hooks/useMessage"
 
@@ -280,7 +280,7 @@ export default {
       // 检测格式
       if (checkDataRule(meaArr)) {
         // 检测完格式了，发送请求
-        let res = await sendInfo(...meaArr, crop.value);
+        let res = await queryFun2(...meaArr, crop.value);
         // console.log(res.data);
         res = res.data.data;
         if (res) {
@@ -315,6 +315,5 @@ h3 {
   font-size: 1.5vw;
   margin-bottom: 20px;
 }
-
 
 </style>

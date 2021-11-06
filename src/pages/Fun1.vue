@@ -191,7 +191,7 @@ import { ref, reactive, onMounted } from "vue";
 import { ElMessageBox, ElLoading } from "element-plus";
 import message from "../hooks/useMessage";
 import { userState } from "../hooks/useUserState";
-import { sendJingWei, updateExpertSuggest } from "../api";
+import { queryFun1, updateExpertSuggest } from "../api";
 
 let map = null,
   markers = null;
@@ -250,14 +250,14 @@ export default {
     ]);
 
     // 发送修改请求
-    function updateSuggest(name, suggest) {
+    function updateSuggest(elementName, suggestValue) {
       let data = {
         // 本次查询的经纬度
-        jing: currJingwei.jing,
-        wei: currJingwei.wei,
-        name,
-        suggest,
-        crop: crop.value,
+        jing: currJingwei.jing + '',
+        wei: currJingwei.wei + '',
+        elementName,
+        suggestValue: suggestValue + '',
+        cropName: crop.value,
       };
       updateExpertSuggest(data).then(
         ({ data }) => {
@@ -280,11 +280,11 @@ export default {
       }
 
       // 检查格式，然后发送请求
-      ElMessageBox.prompt("请输入将要修改的值", "修改查询值", {
+      ElMessageBox.prompt("请输入将要修改的值，无参考值写为任意负数即可", "修改查询值", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         // 匹配小数正则
-        inputPattern: /^(0|([1-9]\d*))(\.\d+)?$/,
+        inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
         inputErrorMessage: "格式错误",
       }).then(({ value }) => {
         // 加载loading
@@ -294,11 +294,18 @@ export default {
           background: "rgba(0, 0, 0, 0.7)",
         });
 
+        let suggestValue = value
+
+        if(value < 0){
+          // 无参考值，给服务器空字符串
+          suggestValue = ''
+        }
+
         // 发送修改请求
-        updateSuggest(row.elementName, value);
+        updateSuggest(row.elementName, suggestValue);
 
         // 重新获取数据
-        sendJingWei(currJingwei.jing, currJingwei.wei, crop.value)
+        queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
           .then(
             ({ data }) => {
               // console.log(data)
@@ -443,7 +450,7 @@ export default {
       clearInfo();
 
       // 发送查询请求
-      let res = await sendJingWei(jingwei.jing, jingwei.wei, crop.value);
+      let res = await queryFun1(jingwei.jing, jingwei.wei, crop.value);
       res = res.data.data;
 
       // 不是直接测量点
@@ -610,3 +617,4 @@ export default {
   margin-top: 15px;
 }
 </style>
+

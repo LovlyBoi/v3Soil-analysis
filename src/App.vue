@@ -13,7 +13,7 @@
         <el-main>
           <!-- 展示面板，一级路由 -->
           <router-view v-slot="{ Component }">
-            <keep-alive>
+            <keep-alive exclude="UserLogin">
               <component :is="Component" />
             </keep-alive>
           </router-view>
@@ -29,7 +29,7 @@ import { useRouter } from "vue-router";
 import headerCom from "./components/HeaderCom";
 import sideBar from "./components/SideBar";
 import { checkCookieLogin } from "./api";
-import { setLogin } from "./hooks/useUserState";
+import { setLogin, setUserInfo } from "./hooks/useUserState";
 
 export default {
   name: "App",
@@ -43,7 +43,6 @@ export default {
 
     // 尝试 cookie 登录
     async function cookieLogin() {
-      // console.log("正在 cookie 登录...");
       let res = await checkCookieLogin();
       try {
         if (res.data && res.data.code == "202") {
@@ -52,7 +51,11 @@ export default {
           return;
         } else if (res.data && res.data.code == "201") {
           setLogin(true);
-          // setUserInfo(this.loginForm);
+          // cookie登录设置身份
+          setUserInfo({
+            username: res.data.data.username,
+            role: res.data.data.roles
+          })
         }
       } catch (e) {
         console.warn("cookie 登录出错", e);

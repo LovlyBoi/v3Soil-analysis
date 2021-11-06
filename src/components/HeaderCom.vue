@@ -22,8 +22,7 @@
     </div>
 
     <div v-else class="showHello">
-      <a href="javascript:;" style="cursor: auto">你好{{ "，" + username }}</a>
-      <!-- <a href="javascript:;" id="exit" @click="exitLogin">退出登录</a> -->
+      <a href="javascript:;" style="cursor: default">你好，{{ username }}</a>
       <el-popconfirm
         confirm-button-text="退出"
         cancel-button-text="取消"
@@ -44,9 +43,10 @@
 <script>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { InfoFilled } from "@element-plus/icons";
 import { currEl, setCurrEl } from "../hooks/useCurrEl";
 import { userState, setLogin } from "../hooks/useUserState";
-import message from "../hooks/useMessage"
+import message from "../hooks/useMessage";
 
 export default {
   name: "Header",
@@ -65,7 +65,7 @@ export default {
     // 退出登录
     function exitLogin() {
       setLogin(false);
-      message('success', '退出登录')
+      message("success", "退出登录");
     }
 
     // 注册点击事件
@@ -76,11 +76,11 @@ export default {
       router.push("/register").catch((e) => e);
     }
 
-    // 优先去本地存储中找名字，没有再去 userState 找，再没有返回 “尊敬的客户”
+    // 优先去去 userState 找，没有再本地存储中找，再没有返回 “尊敬的客户”，这样避免了切换用户时得刷新才能拿到数据（不知道怎么把本地存储变成响应式）
     const username = computed(() => {
       return (
-        window.localStorage.getItem("username") ||
         userState.value.userInfo.username ||
+        window.localStorage.getItem("username") ||
         "尊敬的客户"
       );
     });
@@ -92,6 +92,7 @@ export default {
       showRegister,
       username,
       userState,
+      InfoFilled,
     };
   },
 };

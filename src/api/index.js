@@ -61,7 +61,7 @@ axios.interceptors.response.use(success => {
 })
 
 // 账号密码登录查询 POST
-function checkUser(userInfo) {
+function userLogin(userInfo) {
   return axios({
     method: 'POST',
     url: '/login',
@@ -121,7 +121,7 @@ function checkIDCard(ID) {
 }
 
 // fun1查询
-function sendJingWei(jing, wei, crop) {
+function queryFun1(jing, wei, crop) {
   return axios({
     method: 'GET',
     url: '/fun1',
@@ -134,7 +134,7 @@ function sendJingWei(jing, wei, crop) {
 }
 
 // 发送fun2查询
-function sendInfo(MEN, MOP, MOK, MOM, crop) {
+function queryFun2(MEN, MOP, MOK, MOM, crop) {
   return axios({
     method: 'GET',
     url: '/fun2',
@@ -148,27 +148,28 @@ function sendInfo(MEN, MOP, MOK, MOM, crop) {
   })
 }
 
-function updateExpertSuggest({jing, wei, name, crop, suggest}){
+// 专家修改建议值
+function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue }) {
   return axios({
     method: 'POST',
     url: '/newExpertSuggest',
     data: {
       longitude: jing,
       latitude: wei,
-      elementName: name,
-      cropName: crop,
-      suggestValue: suggest,
+      elementName,
+      cropName,
+      suggestValue,
     }
   })
 }
 
 export {
-  checkUser,
+  userLogin,
   register,
   checkCookieLogin,
   checkUsernameRepeat,
   checkIDCard,
-  sendJingWei,
-  sendInfo,
+  queryFun1,
+  queryFun2,
   updateExpertSuggest,
 }

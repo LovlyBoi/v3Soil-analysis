@@ -51,7 +51,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { checkUser } from "../api";
+import { userLogin } from "../api";
 import { setLogin, setUserInfo } from "../hooks/useUserState";
 import { setCurrEl } from "../hooks/useCurrEl";
 import message from "../hooks/useMessage";
@@ -102,7 +102,7 @@ export default {
         rememberMe: remember.value,
       };
       // 账号密码登录，发送请求
-      let res = await checkUser(userData);
+      let res = await userLogin(userData);
       // 解禁按钮
       disablebtn.value = false;
 
