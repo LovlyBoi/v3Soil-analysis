@@ -228,23 +228,23 @@ export default {
     const updateData = ref([
       {
         name: "碱解氮",
-        elementName: "sug_Effective_N",
+        elementName: "Effective_N",
         // 值为ref对象，所以是会自己跟着改的
         suggestValue: sug_Effective_N,
       },
       {
         name: "有效磷",
-        elementName: "sug_Olsen_P",
+        elementName: "Olsen_P",
         suggestValue: sug_Olsen_P,
       },
       {
         name: "速效钾",
-        elementName: "sug_Olsen_K",
+        elementName: "Olsen_K",
         suggestValue: sug_Olsen_K,
       },
       {
         name: "有机质",
-        elementName: "sug_Organic_matter",
+        elementName: "organic_matter",
         suggestValue: sug_Organic_matter,
       },
     ]);
@@ -253,20 +253,13 @@ export default {
     function updateSuggest(elementName, suggestValue) {
       let data = {
         // 本次查询的经纬度
-        jing: currJingwei.jing + '',
-        wei: currJingwei.wei + '',
+        jing: currJingwei.jing + "",
+        wei: currJingwei.wei + "",
         elementName,
-        suggestValue: suggestValue + '',
+        suggestValue: suggestValue + "",
         cropName: crop.value,
       };
-      updateExpertSuggest(data).then(
-        ({ data }) => {
-          console.log(data);
-        },
-        (reason) => {
-          console.warn(reason);
-        }
-      );
+      return updateExpertSuggest(data);
     }
 
     // 修改数据函数
@@ -280,13 +273,17 @@ export default {
       }
 
       // 检查格式，然后发送请求
-      ElMessageBox.prompt("请输入将要修改的值，无参考值写为任意负数即可", "修改查询值", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        // 匹配小数正则
-        inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-        inputErrorMessage: "格式错误",
-      }).then(({ value }) => {
+      ElMessageBox.prompt(
+        "请输入将要修改的值，无参考值写为任意负数即可",
+        "修改查询值",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          // 匹配小数正则
+          inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
+          inputErrorMessage: "格式错误",
+        }
+      ).then(({ value }) => {
         // 加载loading
         const loading = ElLoading.service({
           lock: true,
@@ -294,33 +291,41 @@ export default {
           background: "rgba(0, 0, 0, 0.7)",
         });
 
-        let suggestValue = value
+        let suggestValue = value;
 
-        if(value < 0){
-          // 无参考值，给服务器空字符串
-          suggestValue = ''
-        }
+        // if (value < 0) {
+        //   // 小于0，不允许
+        //   message('error', '不允许输入负值')
+        // }
 
         // 发送修改请求
-        updateSuggest(row.elementName, suggestValue);
-
-        // 重新获取数据
-        queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
-          .then(
-            ({ data }) => {
-              // console.log(data)
-              // 拆包赋值，更新数据
-              assignResult(data.data);
-            },
-            (reason) => {
-              message("error", "网络好像出问题了呢");
-              console.warn("重新拉取数据失败", reason);
-            }
-          )
-          .finally(() => {
-            // 关闭loading
-            loading.close();
-          });
+        updateSuggest(row.elementName, suggestValue).then(
+          ({ data }) => {
+            console.log(data);
+            // 重新获取数据
+            queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
+              .then(
+                ({ data }) => {
+                  // console.log(data)
+                  // 拆包赋值，更新数据
+                  assignResult(data.data);
+                },
+                (reason) => {
+                  message("error", "网络好像出问题了呢");
+                  console.warn("重新拉取数据失败", reason);
+                }
+              )
+              .finally(() => {
+                // 关闭loading
+                loading.close();
+              });
+          },
+          (reason) => {
+            console.log(reason);
+          }
+        ).finally(() => {
+          loading.close()
+        })
       });
     }
 
@@ -449,9 +454,17 @@ export default {
       // 清除展示框内的信息
       clearInfo();
 
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+
       // 发送查询请求
       let res = await queryFun1(jingwei.jing, jingwei.wei, crop.value);
       res = res.data.data;
+      
+      loading.close()
 
       // 不是直接测量点
       if (res.isDirectMeasured === "false") {

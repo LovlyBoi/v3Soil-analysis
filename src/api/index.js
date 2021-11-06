@@ -22,6 +22,7 @@ axios.interceptors.response.use(success => {
   if (success.status && success.status == 200) {
 
     if (success.data.code == 500 ||
+      success.data.code == 501 ||
       success.data.code == 400 ||
       success.data.code == 403 ||
       success.data.code == 420 ||
@@ -123,11 +124,11 @@ function checkIDCard(ID) {
 // fun1查询
 function queryFun1(jing, wei, crop) {
   return axios({
-    method: 'GET',
+    method: 'POST',
     url: '/fun1',
-    params: {
-      longitude: jing,
-      latitude: wei,
+    data: {
+      longitude: jing + '',
+      latitude: wei + '',
       cropName: crop
     }
   })
