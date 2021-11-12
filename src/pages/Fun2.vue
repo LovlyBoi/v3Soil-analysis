@@ -4,7 +4,11 @@
     <!-- 头部查询组件 -->
     <div class="head-wrapper">
       <!-- 大屏幕响应式 -->
-      <el-row :gutter="10" class="big-screen hidden-sm-and-down" style="margin-bottom: 30px">
+      <el-row
+        :gutter="10"
+        class="big-screen hidden-sm-and-down"
+        style="margin-bottom: 30px"
+      >
         <el-col :span="4">
           <div class="grid-content">
             <el-input
@@ -139,7 +143,7 @@
           plain
           @click="commitInfo"
           style="margin-bottom: 30px"
-          >
+        >
           提交
         </el-button>
       </el-row>
@@ -173,9 +177,10 @@
 
 <script>
 import { ref, reactive } from "vue";
+import { ElLoading } from 'element-plus'
 import { queryFun2 } from "../api";
 import { userState } from "../hooks/useUserState";
-import message from "../hooks/useMessage"
+import message from "../hooks/useMessage";
 
 export default {
   name: "Fun2",
@@ -209,7 +214,7 @@ export default {
       },
     ]);
 
-    const crop = ref("大豆")
+    const crop = ref("大豆");
 
     // 服务器返回的数据
     const sug_Effective_N = ref("");
@@ -248,7 +253,7 @@ export default {
             return !/^\d+$|^\d*\.\d+$/g.test(item);
           })
         ) {
-          message('error', "请输入正确格式的值")
+          message("error", "请输入正确格式的值");
           return false;
         }
         // 格式合格
@@ -262,7 +267,7 @@ export default {
     }
 
     // 提交信息
-    async function commitInfo() {
+    function commitInfo() {
       // 装进数组里，方便下面判断
       let meaArr = [
         mea_Effective_N.value,
@@ -273,22 +278,39 @@ export default {
 
       // 判断是否登录
       if (!userState.value.isLogin) {
-        message('error', '请先登录')
+        message("error", "请先登录");
         return;
       }
 
       // 检测格式
       if (checkDataRule(meaArr)) {
+        
+        // 加载loading
+        const loading = ElLoading.service({
+          lock: true,
+          text: "Loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
+
         // 检测完格式了，发送请求
-        let res = await queryFun2(...meaArr, crop.value);
-        // console.log(res.data);
-        res = res.data.data;
-        if (res) {
+        queryFun2(...meaArr, crop.value)
+        .then(({ data }) => {
+          if(data.code != 200){
+            return Promise.reject(data)
+          }
+          let res = data.data;
           sug_Effective_N.value = res.sug_Effective_N;
           sug_Olsen_P.value = res.sug_Olsen_P;
           sug_Olsen_K.value = res.sug_Olsen_K;
           sug_Organic_matter.value = res.sug_Organic_matter;
-        }
+        })
+        .catch(reason => {
+          message('error', '功能二查询失败')
+          console.warn('fun2查询失败', reason)
+        })
+        .finally(() => {
+          loading.close()
+        })
       }
     }
 
@@ -303,7 +325,7 @@ export default {
       sug_Olsen_P,
       sug_Olsen_K,
       sug_Organic_matter,
-      commitInfo
+      commitInfo,
     };
   },
 };
@@ -315,5 +337,4 @@ h3 {
   font-size: 1.5vw;
   margin-bottom: 20px;
 }
-
 </style>

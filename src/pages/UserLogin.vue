@@ -92,7 +92,7 @@ export default {
     });
 
     // 登录
-    async function login(userName, passWord) {
+    function login(userName, passWord) {
       // 禁用表单
       disablebtn.value = true;
       // 要提交的用户信息
@@ -102,39 +102,43 @@ export default {
         rememberMe: remember.value,
       };
       // 账号密码登录，发送请求
-      let res = await userLogin(userData);
-      // 解禁按钮
-      disablebtn.value = false;
-
-      try {
-        if (res.data && res.data.code == 202) {
-          // 密码错误
+      userLogin(userData)
+      .then(({data}) => {
+        // 密码错误
+        if(data.code == 202){
           loginForm.value.pass = "";
-        } else if (res.data && res.data.code == 200) {
-          // console.log('------', res.data.data);
-          
-          // 登陆成功
-          // 更改登录信息
-          setLogin(true);
-          // 路由导航到 fun1，设置高亮
-          router.replace("/fun1");
-          setCurrEl(1);
-          // 提交用户信息到 userState
-          let userinfo = {
-            username: loginForm.value.username,
-            role: res.data.data.roles,
-          };
-          setUserInfo(userinfo);
-          // 提交用户信息到 localStorage
-          if (window.localStorage) {
-            let username = loginForm.value.username || "";
-            window.localStorage.setItem("username", username);
-          }
+          return
         }
-      } catch (e) {
-        message("error", "好像哪里出错了呢");
-        console.warn(e);
-      }
+        // 其他错误
+        if(data.code != 200){
+          return Promise.reject(data)
+        }
+        // 登陆成功
+        let res = data.data;
+        // 更改登录信息
+        setLogin(true);
+        // 路由导航到 fun1，设置高亮
+        router.replace("/fun1");
+        setCurrEl(1);
+        // 提交用户信息到 userState
+        setUserInfo({
+          username: loginForm.value.username,
+          role: res.roles,
+        });
+        // 提交用户信息到 localStorage
+        if (window.localStorage) {
+          let username = loginForm.value.username || "";
+          window.localStorage.setItem("username", username);
+        }
+      })
+      .catch(reason => {
+        message('error', '登录失败')
+        console.warn('登录请求错误', reason)
+      })
+      .finally(() => {
+        // 解禁按钮
+        disablebtn.value = false;
+      })
     }
 
     function submit() {

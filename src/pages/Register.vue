@@ -97,8 +97,7 @@ export default {
 
     // 检查身份证号
     const checkIdCard = (rule, value, callback) => {
-      // 检查时禁用提交按钮
-      loadingbtn.value = true;
+      
 
       let regx = /(^\d{15}$)|(^\d{17}(\d|X)$)/;
       if (!value) {
@@ -106,6 +105,8 @@ export default {
       } else if (regx.test(value) === false) {
         callback(new Error("身份证格式错误"));
       }
+      // 检查时禁用提交按钮
+      loadingbtn.value = true;
       // 请求检验身份证是否被注册
       checkIDCard(value)
         .then(
@@ -130,12 +131,11 @@ export default {
 
     // 检查用户名
     const checkUsername = (rule, value, callback) => {
-      // 检查时禁用提交按钮
-      loadingbtn.value = true;
       if (!value) {
         return callback(new Error("用户名不能为空"));
       }
-
+      // 禁用提交按钮
+      loadingbtn.value = true;
       // 发送请求验证是否被注册
       checkUsernameRepeat(value)
         .then(
@@ -146,12 +146,12 @@ export default {
             } else {
               callback(new Error(value.data.msg));
             }
-          },
-          (reason) => {
-            callback(new Error("服务器被吃了┭┮﹏┭┮"));
-            console.warn(reason);
           }
         )
+        .catch(reason => {
+          callback(new Error("服务器被吃了┭┮﹏┭┮"));
+          console.warn('检查用户名失败', reason);
+        })
         .finally(() => {
           // 解禁提交按钮
           loadingbtn.value = false;
@@ -160,43 +160,31 @@ export default {
 
     // 检查密码
     const validatePass = (rule, value, callback) => {
-      // 检查时禁用提交按钮
-      loadingbtn.value = true;
-
       if (value === "") {
+        // 解禁按钮
         callback(new Error("请输入密码"));
       } else {
         if (ruleForm.checkPass !== "") {
           // 请求重新检查确认密码来确保两次密码输入一致
           form.value.validateField("checkPass");
         }
-        // 解禁按钮
-        loadingbtn.value = false;
         callback();
       }
     };
 
     // 检查确认密码
     const validatePassAgain = (rule, value, callback) => {
-      // 检查时禁用提交按钮
-      loadingbtn.value = true;
-
       if (value === "") {
         callback(new Error("请再次输入密码"));
       } else if (value !== ruleForm.pass) {
         callback(new Error("两次输入密码不一致!"));
       } else {
-        // 解禁按钮
-        loadingbtn.value = false;
         callback();
       }
     };
 
     // 检查真实姓名
     const checkPeasantname = (rule, value, callback) => {
-      // 检查时禁用提交按钮
-      loadingbtn.value = true;
-
       let regx = /^([\u4e00-\u9fa5]{1,20}|[a-zA-Z].\s]{1,20})$/;
       if (!value) {
         return callback(new Error("请填写姓名！"));
@@ -205,8 +193,6 @@ export default {
       } else {
         callback();
       }
-      // 解禁按钮
-      loadingbtn.value = false;
     };
 
     const rules = reactive({
@@ -242,20 +228,19 @@ export default {
     });
 
     function submitRegister() {
+      // 开启遮罩层
+      loading.value = true;
+      // 使按钮进入加载状态
+      loadingbtn.value = true;
       form.value.validate((valid) => {
         // 校验整个表单成功，进行提交逻辑
         if (valid) {
-          // 开启遮罩层
-          loading.value = true;
-          // 使按钮进入加载状态
-          loadingbtn.value = true;
           let userInfo = {
             username: ruleForm.username,
             password: ruleForm.pass,
             ID: ruleForm.idcard,
             peasantName: ruleForm.peasantname,
           };
-          // console.log(userInfo);
           // 提交请求
           register(userInfo)
             .then(
@@ -276,23 +261,25 @@ export default {
                   }
                 } else {
                   // 注册失败
-                  // 在拦截器就提示过了，所以什么也不做
+                  return Promise.reject(value.data)
                 }
-              },
-              (reason) => {
-                console.warn(reason);
               }
             )
+            .catch(reason => {
+              console.warn('注册失败', reason);
+            })
             .finally(() => {
               loading.value = false;
-              this.loadingbtn = false;
+              loadingbtn.value = false;
             });
         } else {
           // 校验表单失败
           console.warn("表单校验失败");
           return;
         }
-      });
+      })
+      loading.value = false;
+      loadingbtn.value = false;
     }
 
     return {

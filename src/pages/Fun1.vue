@@ -46,7 +46,7 @@
           plain
           @click="commitJingWei"
           style="margin-left: 4vw"
-          >提交</el-button
+          >提交</el-button  
         >
       </el-row>
 
@@ -273,17 +273,22 @@ export default {
       }
 
       // 检查格式，然后发送请求
-      ElMessageBox.prompt(
-        "请输入将要修改的值，无参考值写为任意负数即可",
-        "修改查询值",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          // 匹配小数正则
-          inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-          inputErrorMessage: "格式错误",
+      ElMessageBox.prompt("请输入将要修改的值", "修改查询值", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        // 匹配小数正则
+        inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
+        inputErrorMessage: "格式错误",
+      })
+      .then(({ value }) => {
+        let suggestValue = value;
+
+        if (value < 0) {
+          // 小于0，不允许
+          message("error", "不允许输入负值");
+          return;
         }
-      ).then(({ value }) => {
+
         // 加载loading
         const loading = ElLoading.service({
           lock: true,
@@ -291,41 +296,53 @@ export default {
           background: "rgba(0, 0, 0, 0.7)",
         });
 
-        let suggestValue = value;
-
-        // if (value < 0) {
-        //   // 小于0，不允许
-        //   message('error', '不允许输入负值')
-        // }
-
         // 发送修改请求
-        updateSuggest(row.elementName, suggestValue).then(
-          ({ data }) => {
-            console.log(data);
-            // 重新获取数据
-            queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
-              .then(
-                ({ data }) => {
-                  // console.log(data)
-                  // 拆包赋值，更新数据
-                  assignResult(data.data);
-                },
-                (reason) => {
-                  message("error", "网络好像出问题了呢");
-                  console.warn("重新拉取数据失败", reason);
-                }
-              )
-              .finally(() => {
-                // 关闭loading
-                loading.close();
+        updateSuggest(row.elementName, suggestValue)
+          .then(
+            ({ data }) => {
+              if(data.code != 200){
+                return Promise.reject(data)
+              }
+              // 再开一个loading
+              const loading2 = ElLoading.service({
+                lock: true,
+                text: "Loading",
+                background: "rgba(0, 0, 0, 0.7)",
               });
-          },
-          (reason) => {
-            console.log(reason);
-          }
-        ).finally(() => {
-          loading.close()
-        })
+              // 重新获取数据
+              queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
+                .then(
+                  ({ data }) => {
+                    if(data.code != 200){
+                      return Promise.reject(data)
+                    }
+                    // 拆包赋值，更新数据
+                    let res = data.data;
+                    assignResult(res);
+                  }
+                )
+                .catch(
+                  (reason) => {
+                    message("error", "重新拉取数据失败");
+                    console.warn("重新拉取数据失败", reason);
+                  }
+                )
+                .finally(() => {
+                  // 关闭loading
+                  loading2.close();
+                });
+            },
+            (reason) => {
+              console.log(reason);
+            }
+          )
+          .catch(reason => {
+            message("error", "数据更新失败");
+            console.warn("数据更新失败", reason);
+          })
+          .finally(() => {
+            loading.close();
+          });
       });
     }
 
@@ -439,7 +456,7 @@ export default {
     }
 
     // 发送 fun1 查询
-    async function commitJingWei() {
+    function commitJingWei() {
       // 检查经纬度格式
       if (!checkJingWeiRule(jingwei.jing, jingwei.wei)) {
         return;
@@ -454,6 +471,7 @@ export default {
       // 清除展示框内的信息
       clearInfo();
 
+      // 遮罩层打开
       const loading = ElLoading.service({
         lock: true,
         text: "Loading",
@@ -461,36 +479,52 @@ export default {
       });
 
       // 发送查询请求
-      let res = await queryFun1(jingwei.jing, jingwei.wei, crop.value);
-      res = res.data.data;
-      
-      loading.close()
+      queryFun1(jingwei.jing, jingwei.wei, crop.value)
+      // 成功
+      .then(({ data }) => {
+        if(data.code != 200){
+          return Promise.reject(data)
+        }
+        let res = data.data;
+        // 不是直接测量点
+        if (res.isDirectMeasured === "false") {
+          message(
+            "warning",
+            "暂无该地点的参考值，已为您寻找最近的参考点",
+            4000
+          );
+        }
 
-      // 不是直接测量点
-      if (res.isDirectMeasured === "false") {
-        message("warning", "暂无该地点的参考值，已为您寻找最近的参考点", 4000);
-      }
+        // 赋值本次查询的值
+        currJingwei.jing = res.min_Longitude;
+        currJingwei.wei = res.min_Latitude;
 
-      // 赋值本次查询的值
-      currJingwei.jing = res.min_Longitude;
-      currJingwei.wei = res.min_Latitude;
+        // 在地图上标记出来，注意精确查询是没有min值的
+        let min_point = new window.TMap.LatLng(
+          Number.parseFloat(res.min_Latitude || jingwei.wei),
+          Number.parseFloat(res.min_Longitude || jingwei.jing)
+        );
+        markers.remove(["min_Marker"]);
+        markers.add([
+          {
+            id: "min_Marker",
+            styleId: "redMarker",
+            position: min_point,
+          },
+        ]);
 
-      // 在地图上标记出来
-      let min_point = new window.TMap.LatLng(
-        Number.parseFloat(res.min_Latitude),
-        Number.parseFloat(res.min_Longitude)
-      );
-      markers.remove(["min_Marker"]);
-      markers.add([
-        {
-          id: "min_Marker",
-          styleId: "redMarker",
-          position: min_point,
-        },
-      ]);
-
-      // 数据赋值
-      assignResult(res);
+        // 数据赋值
+        assignResult(res);
+      })
+      // 失败
+      .catch(reason => {
+        console.warn("fun1查询失败", reason)
+        message('error', 'fun1查询失败')
+      })
+      // 最后关闭遮罩
+      .finally(() => {
+        loading.close()
+      })
     }
 
     // 初始化地图

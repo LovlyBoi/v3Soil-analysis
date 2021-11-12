@@ -64,7 +64,10 @@ export default {
 
     // 退出登录
     function exitLogin() {
+      // 状态退出
       setLogin(false);
+      // 清除cookie
+      document.cookie = `u=;JSESSIONID=;`
       message("success", "退出登录");
     }
 
@@ -78,11 +81,18 @@ export default {
 
     // 优先去去 userState 找，没有再本地存储中找，再没有返回 “尊敬的客户”，这样避免了切换用户时得刷新才能拿到数据（不知道怎么把本地存储变成响应式）
     const username = computed(() => {
-      return (
-        userState.value.userInfo.username ||
-        window.localStorage.getItem("username") ||
-        "尊敬的客户"
-      );
+      if(window.localStorage){
+        return (
+          userState.value.userInfo.username ||
+          window.localStorage.getItem("username") ||
+          "尊敬的客户"
+        );
+      }
+      else{
+        return (
+          userState.value.userInfo.username || "尊敬的客户"
+        )
+      }
     });
 
     return {
