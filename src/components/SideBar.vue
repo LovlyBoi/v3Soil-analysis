@@ -1,102 +1,63 @@
 <template>
-  <div class="side-bar-wrapper">
-    <div>
-      <el-row type="flex" justify="center" style="margin: 3px 0">
-        <el-col :span="23">
-          <!-- 通过数字来确定高亮元素 -->
-          <div
-            :class="{
-              active: currEl === 1,
-              'grid-content': true,
-              'bg-purple': true,
-              'fun1-wrapper': true,
-            }"
-          >
-            <a href="javascript:;" @click="toFun1(1)">查成分</a>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" justify="center">
-        <el-col :span="23">
-          <div
-            :class="{
-              active: currEl === 2,
-              'grid-content': true,
-              'bg-purple': true,
-              'fun1-wrapper': true,
-            }"
-          >
-            <a href="javascript:;" @click="toFun2(2)">建议量</a>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+  <div class="side-bar">
+    <el-menu default-active="1" @select="handleSelect">
+      <el-menu-item index="1">
+        <el-icon><map-location /></el-icon>
+        <span>查成分</span>
+      </el-menu-item>
+      <el-menu-item index="2">
+        <el-icon><pie-chart /></el-icon>
+        <span>建议量</span>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script>
 import { useRouter } from "vue-router";
-import { currEl, setCurrEl } from "../hooks/useCurrEl";
+import { MapLocation, PieChart } from "@element-plus/icons";
+import { currEl } from "../hooks/useCurrEl";
+import { useGoto } from "../hooks/useToFun";
 
 export default {
   name: "SideBar",
+  components: {
+    MapLocation,
+    PieChart
+  },
   setup() {
     const router = useRouter();
 
-    function toFun1(num) {
-      // 设置高亮元素
-      setCurrEl(num);
-      // 路由跳转
-      router.replace("/fun1").catch((e) => e);
-    }
+    const goto = useGoto(router);
 
-    function toFun2(num) {
-      // 设置高亮元素
-      setCurrEl(num);
-      // 路由跳转
-      router.replace("/fun2").catch((e) => e);
+    function handleSelect(index) {
+      index = Number.parseInt(index);
+      goto(index);
     }
 
     return {
       currEl,
-      toFun1,
-      toFun2,
+      handleSelect,
     };
   },
 };
 </script>
 
 <style scoped>
-.el-col {
-  border-radius: 4px;
-}
-
-.bg-purple {
-  background: #e9eef3;
-}
-
-.grid-content {
+.el-menu-item {
+  margin: 3px;
+  background-color: #eee;
+  display: block;
   border-radius: 5px;
-  min-height: 36px;
+  font-size: 18px;
+  text-align: center;
 }
 
-.grid-content > a {
-  display: inline-block;
-  width: 100%;
-  line-height: 36px;
+.el-menu-item:hover {
+  background-color: #ccc;
 }
 
-.grid-content:hover a {
-  transition: all 150ms;
-  color: #409eff;
-}
-
-.active {
-  background-color: #b5c0ce;
-}
-
-.active a {
-  color: #409eff;
+.is-active {
+  background-color: #ccc;
 }
 </style>

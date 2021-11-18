@@ -87,20 +87,4 @@ export default {
   text-align: center;
   line-height: 18px;
 }
-
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.pop-up-enter-from,
-.pop-up-leave-to {
-  top: 100vh !important;
-  opacity: 0 !important;
-  transform: scale(0.2) translateX(-200px) !important;
-}
-
-.pop-up-enter-active,
-.pop-up-leave-active {
-  transition: all 0.3s ease-out;
-}
 </style>

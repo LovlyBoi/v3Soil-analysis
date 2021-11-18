@@ -14,7 +14,7 @@ const routes = [
     path: '/fun1',
     // import函数返回promise
     // 使用webpack的magic comment来指定打包名
-    component: () => import(/* webpackChunkName: "fun1-chunk" */'../pages/Fun1')
+    component: () => import(/* webpackChunkName: "fun1-chunk" */'../pages/Fun1/Fun1')
   },
   {
     path: '/fun2',
@@ -43,13 +43,12 @@ const router = createRouter({
 
 // 使用路由守卫来确保高亮元素不会因为修改url而不变
 router.beforeEach((to) => {
-  // console.log(to.path)
   switch (to.path) {
     case "/fun1":
       setCurrEl(1);
       break;
     case "/fun2":
-      setCurrEl(2);
+      setCurrEl(2);                   
       break;
     case "/login":
       if (userState.value.isLogin) {

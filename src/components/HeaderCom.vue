@@ -1,5 +1,6 @@
 <template>
   <div class="head-wrapper">
+    <h1 class="title">土壤成分分析</h1>
     <div v-if="!userState.isLogin">
       <a
         href="javascript:;"
@@ -36,7 +37,6 @@
         </template>
       </el-popconfirm>
     </div>
-    <h1 class="title">土壤成分分析</h1>
   </div>
 </template>
 
@@ -44,8 +44,9 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { InfoFilled } from "@element-plus/icons";
-import { currEl, setCurrEl } from "../hooks/useCurrEl";
+import { currEl } from "../hooks/useCurrEl";
 import { userState, setLogin } from "../hooks/useUserState";
+import { useGoto } from "../hooks/useToFun";
 import message from "../hooks/useMessage";
 
 export default {
@@ -53,13 +54,11 @@ export default {
   setup() {
     // 拿到router
     const router = useRouter();
+    const goto = useGoto(router);
 
     // 登录点击事件
     function showLogin() {
-      // 修改当前高亮元素
-      setCurrEl(-1);
-      // 跳转到用户登录界面
-      router.push("/login").catch((e) => e);
+      goto(-1);
     }
 
     // 退出登录
@@ -67,31 +66,25 @@ export default {
       // 状态退出
       setLogin(false);
       // 清除cookie
-      document.cookie = `u=;JSESSIONID=;`
+      document.cookie = `u=;JSESSIONID=;`;
       message("success", "退出登录");
     }
 
     // 注册点击事件
     function showRegister() {
-      // 修改当前高亮元素
-      setCurrEl(-2);
-      // 跳转到用户登录界面
-      router.push("/register").catch((e) => e);
+      goto(-2);
     }
 
     // 优先去去 userState 找，没有再本地存储中找，再没有返回 “尊敬的客户”，这样避免了切换用户时得刷新才能拿到数据（不知道怎么把本地存储变成响应式）
     const username = computed(() => {
-      if(window.localStorage){
+      if (window.localStorage) {
         return (
           userState.value.userInfo.username ||
           window.localStorage.getItem("username") ||
           "尊敬的客户"
         );
-      }
-      else{
-        return (
-          userState.value.userInfo.username || "尊敬的客户"
-        )
+      } else {
+        return userState.value.userInfo.username || "尊敬的客户";
       }
     });
 
@@ -115,11 +108,11 @@ export default {
 }
 
 .title {
-  font-size: 2vw;
+  font-size: 28px;
   display: inline-block;
   position: absolute;
   left: 50%;
-  transform: translateX(-6vw);
+  transform: translateX(-84px);
 }
 
 #logina,
@@ -129,7 +122,7 @@ export default {
 
 #logina:hover,
 #zhucea:hover {
-  transition: all 150ms;
+  transition: all 300ms;
   color: #409eff;
 }
 

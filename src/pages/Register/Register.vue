@@ -64,7 +64,7 @@ import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { register } from "../../api";
 import { setLogin, setUserInfo } from "../../hooks/useUserState";
-import useToFun1 from "../../hooks/useToFun1";
+import { useToFun1 } from "../../hooks/useToFun";
 import { useRules } from "./config/register-config";
 
 export default {
@@ -85,12 +85,12 @@ export default {
       peasantname: "",
     });
 
-    function clearInfo(registerInfo){
-      registerInfo.username = '';
-      registerInfo.pass = '';
-      registerInfo.checkPass = '';
-      registerInfo.idcard = '';
-      registerInfo.peasantname = '';
+    function clearInfo(registerInfo) {
+      registerInfo.username = "";
+      registerInfo.pass = "";
+      registerInfo.checkPass = "";
+      registerInfo.idcard = "";
+      registerInfo.peasantname = "";
     }
 
     const form = ref(null);

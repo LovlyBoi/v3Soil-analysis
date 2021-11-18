@@ -2,7 +2,7 @@ import { zwRequest } from '../network'
 import message from '../hooks/useMessage';
 
 // fun1查询
-function queryFun1(jing, wei, crop, showMessage = true) {
+function queryFun1(jing, wei, crop, showMessage = true, showLoading = true) {
   const config = {
     method: 'POST',
     url: '/fun1',
@@ -25,6 +25,9 @@ function queryFun1(jing, wei, crop, showMessage = true) {
       }
     }
   }
+  if(!showLoading){
+    config.showLoading = false
+  }
   return zwRequest.request(config)
 }
 
@@ -33,6 +36,7 @@ function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue })
   return zwRequest.request({
     method: 'POST',
     url: '/newExpertSuggest',
+    showLoading: false,
     data: {
       longitude: jing,
       latitude: wei,

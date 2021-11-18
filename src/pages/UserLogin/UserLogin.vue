@@ -7,7 +7,6 @@
         :model="userInfo"
         label-width="80px"
         :disabled="disablebtn"
-        size="medium"
       >
         <h2 class="title">用户登录</h2>
 
@@ -47,7 +46,7 @@ import { useRouter } from "vue-router";
 import { userLogin } from "../../api";
 import { setLogin, setUserInfo } from "../../hooks/useUserState";
 import message from "../../hooks/useMessage";
-import useToFun1 from "../../hooks/useToFun1";
+import { useToFun1 } from "../../hooks/useToFun";
 import { rules } from "./config/login-config";
 
 export default {
@@ -74,7 +73,7 @@ export default {
       userLogin({
         username: userName,
         password: passWord,
-        rememberMe
+        rememberMe,
       })
         .then((data) => {
           // 密码错误，不进catch
@@ -94,7 +93,7 @@ export default {
           // 提交用户信息到 userState
           setUserInfo({
             username: userName,
-            role: data.roles,
+            role: data.data.roles,
           });
           // 提交用户信息到 localStorage
           if (window.localStorage) {
