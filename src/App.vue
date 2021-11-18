@@ -32,36 +32,32 @@ import { checkCookieLogin } from "./api";
 import { setLogin, setUserInfo } from "./hooks/useUserState";
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     headerCom,
     sideBar,
   },
   setup() {
     // 拿到Router对象
-    const router = useRouter()
+    const router = useRouter();
 
     // 尝试 cookie 登录
     async function cookieLogin() {
       let res = await checkCookieLogin();
-      try {
-        if (res.data && res.data.code == "202") {
-          console.warn("cookie 登陆失败", res.data);
-
-          return;
-        } else if (res.data && res.data.code == "201") {
-          setLogin(true);
-          // cookie登录设置身份
-          setUserInfo({
-            username: res.data.data.username,
-            role: res.data.data.roles
-          })
-        }
-      } catch (e) {
-        console.warn("cookie 登录出错", e);
+      if (res.code =='202') {
+        console.log('cookie 登陆失败');
+        return;
+      } else if (res.code == '201') {
+        console.log('cookie 登陆成功')
+        setLogin(true);
+        // cookie登录设置身份
+        setUserInfo({
+          username: res.data.username,
+          role: res.data.roles,
+        });
       }
       // 跳转页面到/fun1
-      router.replace('/fun1')
+      router.replace('/fun1');
     }
 
     onMounted(() => {

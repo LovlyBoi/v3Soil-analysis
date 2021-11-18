@@ -46,7 +46,7 @@
           plain
           @click="commitJingWei"
           style="margin-left: 4vw"
-          >提交</el-button  
+          >提交</el-button
         >
       </el-row>
 
@@ -279,8 +279,7 @@ export default {
         // 匹配小数正则
         inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
         inputErrorMessage: "格式错误",
-      })
-      .then(({ value }) => {
+      }).then(({ value }) => {
         let suggestValue = value;
 
         if (value < 0) {
@@ -299,9 +298,9 @@ export default {
         // 发送修改请求
         updateSuggest(row.elementName, suggestValue)
           .then(
-            ({ data }) => {
-              if(data.code != 200){
-                return Promise.reject(data)
+            (data) => {
+              if (data.code != 200) {
+                return Promise.reject(data);
               }
               // 再开一个loading
               const loading2 = ElLoading.service({
@@ -310,23 +309,19 @@ export default {
                 background: "rgba(0, 0, 0, 0.7)",
               });
               // 重新获取数据
-              queryFun1(currJingwei.jing, currJingwei.wei, crop.value)
-                .then(
-                  ({ data }) => {
-                    if(data.code != 200){
-                      return Promise.reject(data)
-                    }
-                    // 拆包赋值，更新数据
-                    let res = data.data;
-                    assignResult(res);
+              queryFun1(currJingwei.jing, currJingwei.wei, crop.value, false)
+                .then((data) => {
+                  if (data.code != 200) {
+                    return Promise.reject(data);
                   }
-                )
-                .catch(
-                  (reason) => {
-                    message("error", "重新拉取数据失败");
-                    console.warn("重新拉取数据失败", reason);
-                  }
-                )
+                  // 拆包赋值，更新数据
+                  let res = data.data;
+                  assignResult(res);
+                })
+                .catch((reason) => {
+                  message("error", "重新拉取数据失败");
+                  console.warn("重新拉取数据失败", reason);
+                })
                 .finally(() => {
                   // 关闭loading
                   loading2.close();
@@ -336,7 +331,7 @@ export default {
               console.log(reason);
             }
           )
-          .catch(reason => {
+          .catch((reason) => {
             message("error", "数据更新失败");
             console.warn("数据更新失败", reason);
           })
@@ -471,60 +466,49 @@ export default {
       // 清除展示框内的信息
       clearInfo();
 
-      // 遮罩层打开
-      const loading = ElLoading.service({
-        lock: true,
-        text: "Loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-
       // 发送查询请求
       queryFun1(jingwei.jing, jingwei.wei, crop.value)
-      // 成功
-      .then(({ data }) => {
-        if(data.code != 200){
-          return Promise.reject(data)
-        }
-        let res = data.data;
-        // 不是直接测量点
-        if (res.isDirectMeasured === "false") {
-          message(
-            "warning",
-            "暂无该地点的参考值，已为您寻找最近的参考点",
-            4000
+        // 成功
+        .then((data) => {
+          if (data.code != 200) {
+            return Promise.reject(data);
+          }
+          let res = data.data;
+          // 不是直接测量点
+          if (res.isDirectMeasured === "false") {
+            message(
+              "warning",
+              "暂无该地点的参考值，已为您寻找最近的参考点",
+              4000
+            );
+          }
+
+          // 赋值本次查询的值
+          currJingwei.jing = res.min_Longitude;
+          currJingwei.wei = res.min_Latitude;
+
+          // 在地图上标记出来，注意精确查询是没有min值的
+          let min_point = new window.TMap.LatLng(
+            Number.parseFloat(res.min_Latitude || jingwei.wei),
+            Number.parseFloat(res.min_Longitude || jingwei.jing)
           );
-        }
+          markers.remove(["min_Marker"]);
+          markers.add([
+            {
+              id: "min_Marker",
+              styleId: "redMarker",
+              position: min_point,
+            },
+          ]);
 
-        // 赋值本次查询的值
-        currJingwei.jing = res.min_Longitude;
-        currJingwei.wei = res.min_Latitude;
-
-        // 在地图上标记出来，注意精确查询是没有min值的
-        let min_point = new window.TMap.LatLng(
-          Number.parseFloat(res.min_Latitude || jingwei.wei),
-          Number.parseFloat(res.min_Longitude || jingwei.jing)
-        );
-        markers.remove(["min_Marker"]);
-        markers.add([
-          {
-            id: "min_Marker",
-            styleId: "redMarker",
-            position: min_point,
-          },
-        ]);
-
-        // 数据赋值
-        assignResult(res);
-      })
-      // 失败
-      .catch(reason => {
-        console.warn("fun1查询失败", reason)
-        message('error', 'fun1查询失败')
-      })
-      // 最后关闭遮罩
-      .finally(() => {
-        loading.close()
-      })
+          // 数据赋值
+          assignResult(res);
+        })
+        // 失败
+        .catch((reason) => {
+          console.warn("功能一查询失败", reason);
+          message("error", "fun1查询失败");
+        })
     }
 
     // 初始化地图
@@ -664,4 +648,3 @@ export default {
   margin-top: 15px;
 }
 </style>
-

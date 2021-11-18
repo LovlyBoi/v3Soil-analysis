@@ -294,7 +294,7 @@ export default {
 
         // 检测完格式了，发送请求
         queryFun2(...meaArr, crop.value)
-        .then(({ data }) => {
+        .then((data) => {
           if(data.code != 200){
             return Promise.reject(data)
           }

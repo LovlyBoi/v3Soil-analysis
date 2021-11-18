@@ -103,7 +103,7 @@ export default {
       };
       // 账号密码登录，发送请求
       userLogin(userData)
-      .then(({data}) => {
+      .then((data) => {
         // 密码错误
         if(data.code == 202){
           loginForm.value.pass = "";

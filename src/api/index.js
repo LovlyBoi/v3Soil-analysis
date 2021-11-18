@@ -1,82 +1,32 @@
-import axios from 'axios'
-import { ElMessage } from 'element-plus'
-
-
-axios.defaults.timeout = 8000;
-
-// 生产版本 baseURL
-// axios.defaults.baseURL = "http://120.79.189.55:10086/content1-2.0"
-
-// 开发版本 baseURL
-axios.defaults.baseURL = "/api"
-
-// 响应拦截器
-axios.interceptors.response.use(success => {
-  // console.log(success)
-  // 检查重复值，不需要弹窗
-  if (success.config.url == '/checkRepeatUsername' ||
-    success.config.url == '/checkRepeatId_card') {
-    return success
-  }
-
-  if (success.status && success.status == 200) {
-
-    if (success.data.code == 500 ||
-      success.data.code == 501 ||
-      success.data.code == 400 ||
-      success.data.code == 403 ||
-      success.data.code == 420 ||
-      success.data.code == 421 ||
-      success.data.code == 422 ||
-      success.data.code == 423 ||
-      success.data.code == 202) {
-      ElMessage({
-        center: true,
-        message: success.data.msg,
-        type: "error",
-        duration: 1500
-      })
-      return success;
-    }
-    else if (success.data.msg) {
-      ElMessage({
-        center: true,
-        message: success.data.msg,
-        type: "success",
-        duration: 1500
-      })
-    }
-  }
-  return success;
-}, error => {
-  console.warn(error);
-  if (error.message == 'Network Error') {
-    ElMessage({
-      center: true,
-      message: "网络开小差了┭┮﹏┭┮",
-      type: "error",
-      duration: 1500
-    })
-  }
-  return Promise.reject(error)
-})
+import { zwRequest } from '../network'
+import message from '../hooks/useMessage';
 
 // 账号密码登录查询 POST
 function userLogin(userInfo) {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/login',
     data: {
       username: userInfo.username,
       password: userInfo.password,
       rememberMe: userInfo.rememberMe
+    },
+    interceptors: {
+      responseInterceptors(data){
+        if(data.code == 200){
+          message('success', data.msg)
+        } else {
+          message('error', data.msg)
+        }
+        return data
+      }
     }
   })
 }
 
 // 注册
 function register(userInfo) {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/registerUsers',
     data: {
@@ -84,26 +34,49 @@ function register(userInfo) {
       password: userInfo.password,
       id_card: userInfo.ID,
       peasantName: userInfo.peasantName
+    },
+    interceptors: {
+      responseInterceptors(data){
+        if(data.code == 201) {
+          message('success', data.msg)
+        } else {
+          message('error', data.msg)
+        }
+        return data
+      }
     }
   })
 }
 
 // 自动 Cookie 登录查询
 function checkCookieLogin() {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/login',
+    showLoading: false,
     data: {
       isCookieLogin: true
+    },
+    interceptors: {
+      responseInterceptors(res){
+        if(res.code == 202) {
+          message('warning', '自动登陆失败，请重新登陆')
+        }
+        else if(res.code == 201) {
+          message('success', '登陆成功')
+        }
+        return res
+      }
     }
   })
 }
 
 // 检查用户名是否重复
 function checkUsernameRepeat(username) {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/checkRepeatUsername',
+    showLoading: false,
     data: {
       username
     }
@@ -112,9 +85,10 @@ function checkUsernameRepeat(username) {
 
 // 检查身份证号是否重复
 function checkIDCard(ID) {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/checkRepeatId_card',
+    showLoading: false,
     data: {
       "id_card": ID
     }
@@ -122,8 +96,8 @@ function checkIDCard(ID) {
 }
 
 // fun1查询
-function queryFun1(jing, wei, crop) {
-  return axios({
+function queryFun1(jing, wei, crop, showMessage = true) {
+  const config = {
     method: 'POST',
     url: '/fun1',
     data: {
@@ -131,14 +105,29 @@ function queryFun1(jing, wei, crop) {
       latitude: wei + '',
       cropName: crop
     }
-  })
+  }
+  if(showMessage){
+    config.interceptors = {
+      responseInterceptors(data){
+        if(data.code == 200) {
+          message('success', data.msg)
+        }
+        else {
+          message('error', data.msg)
+        }
+        return data
+      }
+    }
+  }
+  return zwRequest.request(config)
 }
 
 // 发送fun2查询
 function queryFun2(MEN, MOP, MOK, MOM, crop) {
-  return axios({
+  return zwRequest.request({
     method: 'GET',
     url: '/fun2',
+    showLoading: false,
     params: {
       mea_Effective_N: MEN,
       mea_Olsen_P: MOP,
@@ -151,7 +140,7 @@ function queryFun2(MEN, MOP, MOK, MOM, crop) {
 
 // 专家修改建议值
 function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue }) {
-  return axios({
+  return zwRequest.request({
     method: 'POST',
     url: '/newExpertSuggest',
     data: {
@@ -160,6 +149,17 @@ function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue })
       elementName,
       cropName,
       suggestValue,
+    },
+    interceptors: {
+      responseInterceptors(data) {
+        if(data.code == 200){
+          message('success', data.msg)
+        }
+        else{
+          message('error', data.msg)
+        }
+        return data
+      }
     }
   })
 }

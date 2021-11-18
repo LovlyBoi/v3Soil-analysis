@@ -110,12 +110,12 @@ export default {
       // 请求检验身份证是否被注册
       checkIDCard(value)
         .then(
-          (value) => {
+          (data) => {
             // 对返回值进行判断
-            if (value.data && value.data.code == "200") {
+            if (data.code == "200") {
               return callback();
             } else {
-              callback(new Error(value.data.msg));
+              callback(new Error(data.msg));
             }
           },
           (reason) => {
@@ -139,12 +139,12 @@ export default {
       // 发送请求验证是否被注册
       checkUsernameRepeat(value)
         .then(
-          (value) => {
+          (data) => {
             // 对返回值进行判断
-            if (value.data && value.data.code == "200") {
+            if (data.code == "200") {
               return callback();
             } else {
-              callback(new Error(value.data.msg));
+              callback(new Error(data.msg));
             }
           }
         )
@@ -244,8 +244,8 @@ export default {
           // 提交请求
           register(userInfo)
             .then(
-              (value) => {
-                if (value.data && value.data.code == "201") {
+              (data) => {
+                if (data.code == "201") {
                   // 注册成功
                   // 更改登录信息
                   setLogin(true);
@@ -253,15 +253,16 @@ export default {
                   router.replace("/fun1");
                   setCurrEl(1);
                   // 提交用户信息到 store
-                  setUserInfo(this.ruleForm);
+                  setUserInfo(ruleForm);
                   // 提交用户信息到 localStorage
                   if (window.localStorage) {
-                    let username = this.ruleForm.username || "";
+                    // console.log()
+                    let username = ruleForm.username || "";
                     window.localStorage.setItem("username", username);
                   }
                 } else {
                   // 注册失败
-                  return Promise.reject(value.data)
+                  return Promise.reject(data)
                 }
               }
             )
