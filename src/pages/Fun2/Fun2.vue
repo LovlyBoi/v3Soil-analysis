@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="fun2">
     <h3>输入成分，查看建议施肥量</h3>
     <!-- 头部查询组件 -->
     <div class="head-wrapper">
@@ -177,10 +177,9 @@
 
 <script>
 import { ref, reactive } from "vue";
-import { ElLoading } from 'element-plus'
-import { queryFun2 } from "../api";
-import { userState } from "../hooks/useUserState";
-import message from "../hooks/useMessage";
+import { queryFun2 } from "../../api";
+import { userState } from "../../hooks/useUserState";
+import message from "../../hooks/useMessage";
 
 export default {
   name: "Fun2",
@@ -284,14 +283,6 @@ export default {
 
       // 检测格式
       if (checkDataRule(meaArr)) {
-        
-        // 加载loading
-        const loading = ElLoading.service({
-          lock: true,
-          text: "Loading",
-          background: "rgba(0, 0, 0, 0.7)",
-        });
-
         // 检测完格式了，发送请求
         queryFun2(...meaArr, crop.value)
         .then((data) => {
@@ -307,9 +298,6 @@ export default {
         .catch(reason => {
           message('error', '功能二查询失败')
           console.warn('fun2查询失败', reason)
-        })
-        .finally(() => {
-          loading.close()
         })
       }
     }

@@ -2,11 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import { setCurrEl } from "../hooks/useCurrEl";
 import { userState } from '../hooks/useUserState';
 
-// import Fun1 from '../pages/Fun1'
-// import Fun2 from '../pages/Fun2'
-// import Register from '../pages/Register'
-// import UserLogin from '../pages/UserLogin'
-
 // 映射关系
 // 异步加载组件，打包时这几个组件会单独打包，提高首屏速度
 const routes = [
@@ -23,20 +18,20 @@ const routes = [
   },
   {
     path: '/fun2',
-    component: () => import(/* webpackChunkName: "fun2-chunk" */'../pages/Fun2')
+    component: () => import(/* webpackChunkName: "fun2-chunk" */'../pages/Fun2/Fun2')
   },
   {
     path: '/register',
-    component: () => import(/* webpackChunkName: "register-chunk" */'../pages/Register')
+    component: () => import(/* webpackChunkName: "register-chunk" */'../pages/Register/Register')
   },
   {
     path: '/login',
-    component: () => import(/* webpackChunkName: "user-login-chunk" */'../pages/UserLogin')
+    component: () => import(/* webpackChunkName: "user-login-chunk" */'../pages/UserLogin/UserLogin')
   },
   {
     // 匹配不到的时候，匹配所有路径进这个route，展示404页面
     path: '/:pathMatch(.*)',
-    component: () => import(/* webpackChunkName: "not-found-chunk" */'../pages/NotFound')
+    component: () => import(/* webpackChunkName: "not-found-chunk" */'../pages/NotFound/NotFound')
   }
 ]
 
