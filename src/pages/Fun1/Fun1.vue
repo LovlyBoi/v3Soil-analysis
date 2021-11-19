@@ -1,5 +1,6 @@
 <template>
   <div class="fun1">
+    <h2 class="hidden-sm-and-up title">查成分</h2>
     <!-- 头部查询组件 -->
     <div class="query-wrapper">
       <!-- 大屏幕响应式 -->
@@ -89,7 +90,11 @@
           </el-select>
         </el-col>
 
-        <el-button type="primary" plain @click="commitJingWei">提交</el-button>
+        <div class="btn-wrapper">
+          <el-button type="primary" plain @click="commitJingWei"
+            >提交</el-button
+          >
+        </div>
       </el-row>
     </div>
 
@@ -210,7 +215,7 @@ export default {
   setup() {
     let crop = ref("玉米");
 
-    const mapRef = ref(null)
+    const mapRef = ref(null);
 
     // 本次查询的经纬度
     let currJingwei = reactive({
@@ -363,7 +368,7 @@ export default {
             Number.parseFloat(res.min_Longitude || jingwei.jing)
           );
 
-          mapRef.value.addNewMarker(min_point)
+          mapRef.value.addNewMarker(min_point);
 
           // 数据赋值
           assignResult(info, res);
@@ -395,7 +400,7 @@ export default {
 
       crop,
       ...info,
-      
+
       currJingwei,
       commitJingWei,
     };
@@ -404,6 +409,10 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  margin-bottom: 20px;
+}
+
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
@@ -415,5 +424,11 @@ export default {
 
 .show-wrapper {
   margin-top: 15px;
+}
+
+.btn-wrapper {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
 }
 </style>

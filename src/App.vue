@@ -1,11 +1,16 @@
 <template>
   <el-container>
-    <el-header>
-      <!-- 头部组件 -->
+    <!-- 头部组件 -->
+    <el-header class="hidden-xs-only">
       <header-com></header-com>
     </el-header>
+    <el-header class="hidden-sm-and-up">
+    </el-header>
+    <el-header class="hidden-sm-and-up phone-header">
+      <phone-header></phone-header>
+    </el-header>
     <el-container>
-      <el-aside width="15%">
+      <el-aside width="15%" class="hidden-xs-only">
         <!-- 侧边栏组件 -->
         <side-bar></side-bar>
       </el-aside>
@@ -68,10 +73,16 @@ export default {
 </script>
 
 <style>
+.phone-header {
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+}
+
 .el-header {
   background-color: #e9eef3;
   color: #222;
-  text-align: center;
+  /* text-align: center; */
   line-height: 60px;
 }
 

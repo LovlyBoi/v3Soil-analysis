@@ -103,18 +103,28 @@ export default {
     });
 
     return {
-      addNewMarker
-    }
+      addNewMarker,
+    };
   },
 };
 </script>
 
 <style scoped>
-.map-wrapper {
-  width: 100%;
-  height: 400px;
-  margin-top: 15px;
-  background-color: rgb(141, 148, 168);
+@media only screen and (max-width: 768px) {
+  .map-wrapper {
+    width: 100%;
+    height: 40vh;
+    margin-top: 15px;
+    background-color: rgb(141, 148, 168);
+  }
+}
+@media only screen and (min-width: 768px) {
+  .map-wrapper {
+    width: 100%;
+    height: 400px;
+    margin-top: 15px;
+    background-color: rgb(141, 148, 168);
+  }
 }
 
 #map-container {

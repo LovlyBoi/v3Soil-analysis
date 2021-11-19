@@ -45,9 +45,9 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { InfoFilled } from "@element-plus/icons";
 import { currEl } from "../hooks/useCurrEl";
-import { userState, setLogin } from "../hooks/useUserState";
+import { userState } from "../hooks/useUserState";
 import { useGoto } from "../hooks/useToFun";
-import message from "../hooks/useMessage";
+import exitLogin from "../hooks/useExitLogin"
 
 export default {
   name: "Header",
@@ -59,15 +59,6 @@ export default {
     // 登录点击事件
     function showLogin() {
       goto(-1);
-    }
-
-    // 退出登录
-    function exitLogin() {
-      // 状态退出
-      setLogin(false);
-      // 清除cookie
-      document.cookie = `u=;JSESSIONID=;`;
-      message("success", "退出登录");
     }
 
     // 注册点击事件
