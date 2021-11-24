@@ -1,6 +1,6 @@
 <template>
   <div class="fun2">
-    <h3>输入成分，查看建议施肥量</h3>
+    <h2>输入成分，查看建议施肥量</h2>
     <!-- 头部查询组件 -->
     <div class="head-wrapper">
       <!-- 大屏幕响应式 -->
@@ -285,20 +285,20 @@ export default {
       if (checkDataRule(meaArr)) {
         // 检测完格式了，发送请求
         queryFun2(...meaArr, crop.value)
-        .then((data) => {
-          if(data.code != 200){
-            return Promise.reject(data)
-          }
-          let res = data.data;
-          sug_Effective_N.value = res.sug_Effective_N;
-          sug_Olsen_P.value = res.sug_Olsen_P;
-          sug_Olsen_K.value = res.sug_Olsen_K;
-          sug_Organic_matter.value = res.sug_Organic_matter;
-        })
-        .catch(reason => {
-          message('error', '功能二查询失败')
-          console.warn('fun2查询失败', reason)
-        })
+          .then((data) => {
+            if (data.code != 200) {
+              return Promise.reject(data);
+            }
+            let res = data.data;
+            sug_Effective_N.value = res.sug_Effective_N;
+            sug_Olsen_P.value = res.sug_Olsen_P;
+            sug_Olsen_K.value = res.sug_Olsen_K;
+            sug_Organic_matter.value = res.sug_Organic_matter;
+          })
+          .catch((reason) => {
+            message("error", "功能二查询失败");
+            console.warn("fun2查询失败", reason);
+          });
       }
     }
 
@@ -320,9 +320,18 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-  letter-spacing: 1.5px;
-  font-size: 1.5vw;
-  margin-bottom: 20px;
+@media only screen and (max-width: 768px) {
+  h2 {
+    letter-spacing: 1.5px;
+    font-size: 6vw;
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  h2 {
+    letter-spacing: 1.5px;
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
 }
 </style>

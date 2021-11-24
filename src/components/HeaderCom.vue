@@ -1,6 +1,6 @@
 <template>
   <div class="head-wrapper">
-    <h1 class="title">土壤成分分析</h1>
+    <h1 class="title">智能施肥</h1>
     <div v-if="!userState.isLogin">
       <a
         href="javascript:;"
@@ -99,11 +99,13 @@ export default {
 }
 
 .title {
-  font-size: 28px;
+  width: 140px;
+  font-size: 32px;
+  letter-spacing: 3px;
   display: inline-block;
   position: absolute;
   left: 50%;
-  transform: translateX(-84px);
+  transform: translateX(-70px);
 }
 
 #logina,

@@ -16,6 +16,7 @@
       </li>
     </ul>
   </div>
+  <div class="cover" @click="coverClickHandle"></div>
   <div class="action-wrapper" v-if="!userState.isLogin">
     <el-button type="text" @click="showLogin">登录</el-button>
     <el-button type="text" @click="showRegister">注册</el-button>
@@ -39,9 +40,10 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { InfoFilled } from "@element-plus/icons";
 import { useToFun1, useToFun2, useGoto } from "../hooks/useToFun";
 import { userState } from "../hooks/useUserState";
-import exitLogin from "../hooks/useExitLogin"
+import exitLogin from "../hooks/useExitLogin";
 
 export default {
   setup() {
@@ -52,6 +54,10 @@ export default {
 
     function closeToggler() {
       toggler.value.checked = false;
+    }
+
+    function coverClickHandle(){
+      toggler.value.checked = false
     }
 
     let toFun1 = function () {
@@ -65,12 +71,12 @@ export default {
     };
 
     let showLogin = function () {
-      goto(-1)
-    }
+      goto(-1);
+    };
 
     let showRegister = function () {
-      goto(-2)
-    }
+      goto(-2);
+    };
 
     return {
       toggler,
@@ -79,7 +85,9 @@ export default {
       userState,
       exitLogin,
       showLogin,
-      showRegister
+      showRegister,
+      InfoFilled,
+      coverClickHandle
     };
   },
 };
@@ -96,6 +104,16 @@ ul {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  display: none;
 }
 
 .action-wrapper {
@@ -125,6 +143,7 @@ header {
   margin: auto 0;
   display: inline-block;
   cursor: pointer;
+  z-index: 999;
 }
 
 .hamburger-content > span {
@@ -154,7 +173,7 @@ header {
 }
 
 .nav-container {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   z-index: 9999;
   top: 60px;
@@ -167,5 +186,8 @@ header {
 
 #toggler:checked ~ .nav-container {
   height: 30vh;
+}
+#toggler:checked ~ .cover {
+  display: block;
 }
 </style>

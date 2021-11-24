@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 
 const info = {
   name_countryside: ref(""),
@@ -33,14 +33,21 @@ const updateData = ref([
     elementName: "Olsen_K",
     suggestValue: info.sug_Olsen_K,
   },
-  {
-    name: "有机质",
-    elementName: "organic_matter",
-    suggestValue: info.sug_Organic_matter,
-  },
+  // {
+  //   name: "有机质",
+  //   elementName: "organic_matter",
+  //   suggestValue: info.sug_Organic_matter,
+  // },
 ]);
+
+// 本次查询的经纬度
+let currJingwei = reactive({
+  jing: "",
+  wei: "",
+});
 
 export {
   info,
-  updateData
+  updateData,
+  currJingwei
 }

@@ -4,8 +4,7 @@
     <el-header class="hidden-xs-only">
       <header-com></header-com>
     </el-header>
-    <el-header class="hidden-sm-and-up">
-    </el-header>
+    <!-- <el-header class="hidden-sm-and-up"> </el-header> -->
     <el-header class="hidden-sm-and-up phone-header">
       <phone-header></phone-header>
     </el-header>
@@ -37,7 +36,7 @@ import { checkCookieLogin } from "./api";
 import { setLogin, setUserInfo } from "./hooks/useUserState";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     headerCom,
     sideBar,
@@ -49,11 +48,11 @@ export default {
     // 尝试 cookie 登录
     async function cookieLogin() {
       let res = await checkCookieLogin();
-      if (res.code =='202') {
-        console.log('cookie 登陆失败');
+      if (res.code == "202") {
+        console.log("cookie 登陆失败");
         return;
-      } else if (res.code == '201') {
-        console.log('cookie 登陆成功')
+      } else if (res.code == "201") {
+        console.log("cookie 登陆成功");
         setLogin(true);
         // cookie登录设置身份
         setUserInfo({
@@ -62,7 +61,7 @@ export default {
         });
       }
       // 跳转页面到/fun1
-      router.replace('/fun1');
+      router.replace("/fun1");
     }
 
     onMounted(() => {
@@ -73,6 +72,21 @@ export default {
 </script>
 
 <style>
+@media only screen and (max-width: 768px) {
+  .el-drawer {
+    width: 80% !important;
+  }
+  .el-message-box {
+    width: 70vw !important;
+  }
+  .el-main{
+    margin-top: 60px !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  
+}
+
 .phone-header {
   width: 100%;
   position: fixed;
