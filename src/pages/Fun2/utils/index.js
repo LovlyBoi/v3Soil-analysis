@@ -1,4 +1,4 @@
-import { message } from '../../../hooks/useMessage'
+import message from '../../../hooks/useMessage'
 // 检查数据格式
 function checkDataRule(meaArr) {
   if (!Array.isArray(meaArr)) {

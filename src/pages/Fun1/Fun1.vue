@@ -1,6 +1,6 @@
 <template>
   <div class="fun1">
-    <h2 class="hidden-sm-and-up title">查成分</h2>
+    <h2 class="hidden-sm-and-up title">智慧查询</h2>
     <!-- 头部查询组件 -->
     <div class="query-wrapper">
       <!-- 大屏幕响应式 -->

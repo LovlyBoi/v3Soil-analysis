@@ -10,7 +10,7 @@
         <el-descriptions-item width="160px" label="村名称">
           {{ name_village }}
         </el-descriptions-item>
-        <el-descriptions-item width="160px" label="PH 值">
+        <el-descriptions-item width="160px" label="pH 值">
           {{ mea_ph }}
         </el-descriptions-item>
         <el-descriptions-item label="碱解氮含量 (mg/kg)">
@@ -87,7 +87,7 @@
         <el-descriptions-item width="160px" label="村名称">
           {{ name_village }}
         </el-descriptions-item>
-        <el-descriptions-item width="160px" label="PH 值">
+        <el-descriptions-item width="160px" label="pH 值">
           {{ mea_ph }}
         </el-descriptions-item>
         <el-descriptions-item label="碱解氮含量 (mg/kg)">
