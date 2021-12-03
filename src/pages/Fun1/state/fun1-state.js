@@ -5,9 +5,10 @@ const info = {
   name_village: ref(""),
 
   mea_Effective_N: ref(""),
-  mea_getOlsen_P: ref(""),
-  mea_getOlsen_K: ref(""),
-  mea_getOrganic_matter: ref(""),
+  mea_Olsen_P: ref(""),
+  mea_Olsen_K: ref(""),
+  mea_Organic_matter: ref(""),
+  mea_ph: ref(""),
 
   sug_Effective_N: ref(""),
   sug_Olsen_P: ref(""),
@@ -32,12 +33,7 @@ const updateData = ref([
     name: "速效钾",
     elementName: "Olsen_K",
     suggestValue: info.sug_Olsen_K,
-  },
-  // {
-  //   name: "有机质",
-  //   elementName: "organic_matter",
-  //   suggestValue: info.sug_Organic_matter,
-  // },
+  }
 ]);
 
 // 本次查询的经纬度

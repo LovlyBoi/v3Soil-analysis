@@ -4,7 +4,6 @@
     <el-header class="hidden-xs-only">
       <header-com></header-com>
     </el-header>
-    <!-- <el-header class="hidden-sm-and-up"> </el-header> -->
     <el-header class="hidden-sm-and-up phone-header">
       <phone-header></phone-header>
     </el-header>
@@ -25,6 +24,8 @@
       </el-container>
     </el-container>
   </el-container>
+
+  <!-- <test></test> -->
 </template>
 
 <script>
@@ -35,11 +36,16 @@ import sideBar from "./components/SideBar";
 import { checkCookieLogin } from "./api";
 import { setLogin, setUserInfo } from "./hooks/useUserState";
 
+
+// import Test from './components/test.vue'
+
 export default {
   name: "App",
   components: {
     headerCom,
     sideBar,
+
+    // Test
   },
   setup() {
     // 拿到Router对象
@@ -79,12 +85,11 @@ export default {
   .el-message-box {
     width: 70vw !important;
   }
-  .el-main{
+  .el-main {
     margin-top: 60px !important;
   }
 }
 @media only screen and (min-width: 768px) {
-  
 }
 
 .phone-header {

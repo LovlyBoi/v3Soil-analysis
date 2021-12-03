@@ -6,9 +6,9 @@ function clearInfo(data, currJingwei) {
   data.name_village.value = "";
 
   data.mea_Effective_N.value = "";
-  data.mea_getOlsen_P.value = "";
-  data.mea_getOlsen_K.value = "";
-  data.mea_getOrganic_matter.value = "";
+  data.mea_Olsen_P.value = "";
+  data.mea_Olsen_K.value = "";
+  data.mea_Organic_matter.value = "";
 
   data.sug_Effective_N.value = "";
   data.sug_Olsen_P.value = "";
@@ -25,14 +25,15 @@ function assignResult(data, res) {
   data.name_village.value = res.name_village;
 
   data.mea_Effective_N.value = res.mea_Effective_N;
-  data.mea_getOlsen_P.value = res.mea_getOlsen_P;
-  data.mea_getOlsen_K.value = res.mea_getOlsen_K;
-  data.mea_getOrganic_matter.value = res.mea_getOrganic_matter;
+  data.mea_Olsen_P.value = res.mea_Olsen_P;
+  data.mea_Olsen_K.value = res.mea_Olsen_K;
+  data.mea_Organic_matter.value = res.mea_organic_matter;
+  data.mea_ph.value = res.mea_ph
 
   data.sug_Effective_N.value = res.sug_Effective_N;
   data.sug_Olsen_P.value = res.sug_Olsen_P;
   data.sug_Olsen_K.value = res.sug_Olsen_K;
-  data.sug_Organic_matter.value = res.sug_Organic_matter;
+  data.sug_Organic_matter.value = res.sug_organic_matter;
 }
 
 // 检查经纬度格式
@@ -89,9 +90,18 @@ function isOutOfBound(jing, wei) {
   return false;
 }
 
+function addPoint(mapRef, jing, wei) {
+  let point = new window.TMap.LatLng(
+    Number.parseFloat(wei),
+    Number.parseFloat(jing)
+  );
+  mapRef.value.addNewMarker(point);
+}
+
 export {
   clearInfo,
   assignResult,
   checkJingWeiRule,
-  isOutOfBound
+  isOutOfBound,
+  addPoint,
 }

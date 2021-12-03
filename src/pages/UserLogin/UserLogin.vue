@@ -2,7 +2,7 @@
   <div class="user-login">
     <div class="wrapper">
       <el-form
-        ref="form"
+        ref="formRef"
         :rules="rules"
         :model="userInfo"
         label-width="80px"
@@ -48,12 +48,12 @@ import { setLogin, setUserInfo } from "../../hooks/useUserState";
 import message from "../../hooks/useMessage";
 import { useToFun1 } from "../../hooks/useToFun";
 import { rules } from "./config/login-config";
+import { cache } from "../../utils/cache";
 
 export default {
   name: "UserLogin",
   setup() {
     const router = useRouter();
-
     const toFun1 = useToFun1(router);
 
     const userInfo = ref({
@@ -63,7 +63,7 @@ export default {
     });
     const remember = ref(false);
     const disablebtn = ref(false);
-    const form = ref(null);
+    const formRef = ref(null);
 
     // 登录
     function login(userName, passWord, rememberMe) {
@@ -96,10 +96,7 @@ export default {
             role: data.data.roles,
           });
           // 提交用户信息到 localStorage
-          if (window.localStorage) {
-            let username = userName || "";
-            window.localStorage.setItem("username", username);
-          }
+          cache.setCache("username", userName || "");
         })
         .catch((reason) => {
           message("error", "登录失败");
@@ -112,7 +109,7 @@ export default {
     }
 
     function submit() {
-      form.value.validate((valid) => {
+      formRef.value.validate((valid) => {
         if (!valid) {
           message("error", "请完善信息哦");
           return;
@@ -123,7 +120,7 @@ export default {
 
     return {
       userInfo,
-      form,
+      formRef,
       remember,
       disablebtn,
       submit,

@@ -47,7 +47,8 @@ import { InfoFilled } from "@element-plus/icons";
 import { currEl } from "../hooks/useCurrEl";
 import { userState } from "../hooks/useUserState";
 import { useGoto } from "../hooks/useToFun";
-import exitLogin from "../hooks/useExitLogin"
+import exitLogin from "../hooks/useExitLogin";
+import { cache } from "../utils/cache";
 
 export default {
   name: "Header",
@@ -71,7 +72,7 @@ export default {
       if (window.localStorage) {
         return (
           userState.value.userInfo.username ||
-          window.localStorage.getItem("username") ||
+          cache.getCache("username") ||
           "尊敬的客户"
         );
       } else {

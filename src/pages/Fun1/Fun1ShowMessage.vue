@@ -1,5 +1,5 @@
 <template>
-  <div class="show-wrapper">
+  <div class="fun1-show-message">
     <!-- 大屏幕显示 -->
     <div class="hidden-xs-only">
       <!-- 土地指标 -->
@@ -11,26 +11,26 @@
           {{ name_village }}
         </el-descriptions-item>
         <el-descriptions-item width="160px" label="PH 值">
-          <!-- 暂时没有数据 -->
+          {{ mea_ph }}
         </el-descriptions-item>
         <el-descriptions-item label="碱解氮含量 (mg/kg)">
           {{ mea_Effective_N }}
         </el-descriptions-item>
         <el-descriptions-item label="有效磷含量 (mg/kg)">
-          {{ mea_getOlsen_P }}
+          {{ mea_Olsen_P }}
         </el-descriptions-item>
         <el-descriptions-item label="速效钾含量 (mg/kg)">
-          {{ mea_getOlsen_K }}
+          {{ mea_Olsen_K }}
         </el-descriptions-item>
         <el-descriptions-item label="有机质含量 (g/kg)">
-          {{ mea_getOrganic_matter }}
+          {{ mea_Organic_matter }}
         </el-descriptions-item>
-        <el-descriptions-item label="代替测量点的经度">
+        <!-- <el-descriptions-item label="代替测量点的经度">
           {{ currJingwei.jing }}
         </el-descriptions-item>
         <el-descriptions-item label="代替测量点的纬度">
           {{ currJingwei.wei }}
-        </el-descriptions-item>
+        </el-descriptions-item> -->
       </el-descriptions>
 
       <el-button
@@ -88,26 +88,26 @@
           {{ name_village }}
         </el-descriptions-item>
         <el-descriptions-item width="160px" label="PH 值">
-          <!-- 暂时没有数据 -->
+          {{ mea_ph }}
         </el-descriptions-item>
         <el-descriptions-item label="碱解氮含量 (mg/kg)">
           {{ mea_Effective_N }}
         </el-descriptions-item>
         <el-descriptions-item label="有效磷含量 (mg/kg)">
-          {{ mea_getOlsen_P }}
+          {{ mea_Olsen_P }}
         </el-descriptions-item>
         <el-descriptions-item label="速效钾含量 (mg/kg)">
-          {{ mea_getOlsen_K }}
+          {{ mea_Olsen_K }}
         </el-descriptions-item>
         <el-descriptions-item label="有机质含量 (g/kg)">
-          {{ mea_getOrganic_matter }}
+          {{ mea_Organic_matter }}
         </el-descriptions-item>
-        <el-descriptions-item label="代替测量点的经度">
+        <!-- <el-descriptions-item label="代替测量点的经度">
           {{ currJingwei.jing }}
         </el-descriptions-item>
         <el-descriptions-item label="代替测量点的纬度">
           {{ currJingwei.wei }}
-        </el-descriptions-item>
+        </el-descriptions-item> -->
       </el-descriptions>
 
       <el-button
@@ -295,7 +295,7 @@ export default {
       userState,
       ...info,
       currJingwei,
-      updateData
+      updateData,
     };
   },
 };

@@ -105,7 +105,7 @@
 <script>
 import { ref, reactive } from "vue";
 import Fun1Map from "./Fun1Map.vue";
-import Fun1ShowMessage from "./Fun1ShowMessage.vue"
+import Fun1ShowMessage from "./Fun1ShowMessage.vue";
 import message from "../../hooks/useMessage";
 import { userState } from "../../hooks/useUserState";
 import { queryFun1 } from "../../api";
@@ -115,6 +115,7 @@ import {
   assignResult,
   checkJingWeiRule,
   isOutOfBound,
+  addPoint,
 } from "./utils";
 import { info, currJingwei } from "./state/fun1-state";
 
@@ -134,8 +135,6 @@ export default {
       jing: "",
       wei: "",
     });
-
-    
 
     // 发送 fun1 查询
     function commitJingWei() {
@@ -166,26 +165,23 @@ export default {
             return Promise.reject(data);
           }
           let res = data.data;
-          // 不是直接测量点
+          // 不是直接测量点，什么都不做
           if (res.isDirectMeasured === "false") {
-            message(
-              "warning",
-              "暂无该地点的参考值，已为您寻找最近的参考点",
-              4000
-            );
+            // message(
+            //   "warning",
+            //   "暂无该地点的参考值，已为您寻找最近的参考点",
+            //   4000
+            // );
           }
 
           // 赋值本次查询的值
           currJingwei.jing = res.min_Longitude;
           currJingwei.wei = res.min_Latitude;
 
-          // 在地图上标记出来，注意精确查询是没有min值的
-          let min_point = new window.TMap.LatLng(
-            Number.parseFloat(res.min_Latitude || jingwei.wei),
-            Number.parseFloat(res.min_Longitude || jingwei.jing)
-          );
-
-          mapRef.value.addNewMarker(min_point);
+          let wei = res.min_Latitude ?? jingwei.wei;
+          let jing = res.min_Longitude ?? jingwei.jing;
+          // 在地图上加点
+          addPoint(mapRef, jing, wei)
 
           // 数据赋值
           assignResult(info, res);
@@ -196,6 +192,7 @@ export default {
           message("error", "fun1查询失败");
         });
     }
+
 
     function mapClickHandle({ jing, wei }) {
       jingwei.jing = jing;

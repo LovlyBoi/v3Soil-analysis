@@ -176,143 +176,59 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { queryFun2 } from "../../api";
 import { userState } from "../../hooks/useUserState";
 import message from "../../hooks/useMessage";
+import { options } from "./config/fun2-config";
+import { data as state } from "./state/fun2-state";
+import { checkDataRule, assignResult } from "./utils";
 
 export default {
   name: "Fun2",
   setup() {
-    // 收集的数据
-    const mea_Effective_N = ref("");
-    const mea_Olsen_P = ref("");
-    const mea_Olsen_K = ref("");
-    const mea_Organic_matter = ref("");
-
-    const options = reactive([
-      {
-        value: "大豆",
-        label: "大豆",
-      },
-      {
-        value: "玉米",
-        label: "玉米",
-      },
-      {
-        value: "小麦",
-        label: "小麦",
-      },
-      {
-        value: "香瓜",
-        label: "香瓜",
-      },
-      {
-        value: "糯玉米",
-        label: "糯玉米",
-      },
-    ]);
-
     const crop = ref("大豆");
-
-    // 服务器返回的数据
-    const sug_Effective_N = ref("");
-    const sug_Olsen_P = ref("");
-    const sug_Olsen_K = ref("");
-    const sug_Organic_matter = ref("");
-
-    function clearInfo() {
-      sug_Effective_N.value = "";
-      sug_Olsen_P.value = "";
-      sug_Olsen_K.value = "";
-      sug_Organic_matter.value = "";
-    }
-
-    // 检查数据格式
-    function checkDataRule(meaArr) {
-      if (!Array.isArray(meaArr)) {
-        return;
-      }
-
-      // 判断输入值的格式
-      if (
-        meaArr.some((item) => {
-          // 如果有非空项
-          return item === "" ? false : true;
-        })
-      ) {
-        // 取到所有非空项
-        let notEmptyItems = meaArr.filter((item) => {
-          return item === "" ? false : true;
-        });
-
-        // 对所有非空项进行格式判断，只要有不合格的就进行提示
-        if (
-          notEmptyItems.some((item) => {
-            return !/^\d+$|^\d*\.\d+$/g.test(item);
-          })
-        ) {
-          message("error", "请输入正确格式的值");
-          return false;
-        }
-        // 格式合格
-        return true;
-      }
-      // 一项都没有输入，清空展示框
-      else {
-        clearInfo();
-        return false;
-      }
-    }
 
     // 提交信息
     function commitInfo() {
-      // 装进数组里，方便下面判断
-      let meaArr = [
-        mea_Effective_N.value,
-        mea_Olsen_P.value,
-        mea_Olsen_K.value,
-        mea_Organic_matter.value,
-      ];
-
       // 判断是否登录
       if (!userState.value.isLogin) {
         message("error", "请先登录");
         return;
       }
 
+      // 装进数组里，方便下面判断
+      let meaArr = [
+        state.mea_Effective_N.value,
+        state.mea_Olsen_P.value,
+        state.mea_Olsen_K.value,
+        state.mea_Organic_matter.value,
+      ];
+
       // 检测格式
-      if (checkDataRule(meaArr)) {
-        // 检测完格式了，发送请求
-        queryFun2(...meaArr, crop.value)
-          .then((data) => {
-            if (data.code != 200) {
-              return Promise.reject(data);
-            }
-            let res = data.data;
-            sug_Effective_N.value = res.sug_Effective_N;
-            sug_Olsen_P.value = res.sug_Olsen_P;
-            sug_Olsen_K.value = res.sug_Olsen_K;
-            sug_Organic_matter.value = res.sug_Organic_matter;
-          })
-          .catch((reason) => {
-            message("error", "功能二查询失败");
-            console.warn("fun2查询失败", reason);
-          });
+      if (!checkDataRule(meaArr)) {
+        return;
       }
+
+      // 检测完格式了，发送请求
+      queryFun2(...meaArr, crop.value)
+        .then((data) => {
+          if (data.code != 200) {
+            return Promise.reject(data);
+          }
+          let res = data.data;
+          assignResult(state, res)
+        })
+        .catch((reason) => {
+          message("error", "功能二查询失败");
+          console.warn("fun2查询失败", reason);
+        });
     }
 
     return {
-      mea_Effective_N,
-      mea_Olsen_P,
-      mea_Olsen_K,
-      mea_Organic_matter,
+      ...state,
       options,
       crop,
-      sug_Effective_N,
-      sug_Olsen_P,
-      sug_Olsen_K,
-      sug_Organic_matter,
       commitInfo,
     };
   },
@@ -323,7 +239,7 @@ export default {
 @media only screen and (max-width: 768px) {
   h2 {
     letter-spacing: 1.5px;
-    font-size: 6vw;
+    font-size: 20px;
     margin-bottom: 20px;
   }
 }
