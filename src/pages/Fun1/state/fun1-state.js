@@ -16,6 +16,58 @@ const info = {
   sug_Organic_matter: ref("")
 }
 
+const sugest_value = {
+  sug_Effective_N: info.sug_Effective_N,
+  sug_Olsen_P: info.sug_Olsen_P,
+  sug_Olsen_K: info.sug_Olsen_P,
+  sug_Organic_matter: info.sug_Olsen_P
+}
+
+// 本次查询的经纬度
+let currJingwei = reactive({
+  jing: "",
+  wei: "",
+});
+
+const measure_value = [
+  {
+    label: '乡/镇名称',
+    value: info.name_countryside
+  },
+  {
+    label: '村名称',
+    value: info.name_village
+  },
+  {
+    label: 'pH 值',
+    value: info.mea_ph
+  },
+  {
+    label: '碱解氮含量 (mg/kg)',
+    value: info.mea_Effective_N
+  },
+  {
+    label: '有效磷含量 (mg/kg)',
+    value: info.mea_Olsen_P
+  },
+  {
+    label: '速效钾含量 (mg/kg)',
+    value: info.mea_Olsen_K
+  },
+  {
+    label: '有机质含量 (g/kg)',
+    value: info.mea_Organic_matter
+  },
+  // {
+  //   label: '代替测量点的经度',
+  //   value: currJingwei.jing
+  // },
+  // {
+  //   label: '代替测量点的纬度',
+  //   value: currJingwei.wei
+  // },
+]
+
 // 专家修改数据
 const updateData = ref([
   {
@@ -36,14 +88,12 @@ const updateData = ref([
   }
 ]);
 
-// 本次查询的经纬度
-let currJingwei = reactive({
-  jing: "",
-  wei: "",
-});
+
 
 export {
   info,
+  sugest_value,
   updateData,
-  currJingwei
+  currJingwei,
+  measure_value
 }

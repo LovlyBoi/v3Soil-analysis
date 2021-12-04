@@ -4,33 +4,14 @@
     <div class="hidden-xs-only">
       <!-- 土地指标 -->
       <el-descriptions title="土地指标" :column="3" size="medium" border>
-        <el-descriptions-item width="160px" label="乡/镇名称">
-          {{ name_countryside }}
+        <el-descriptions-item
+          v-for="item in measure_value"
+          :key="item.value"
+          width="160px"
+          :label="item.label"
+        >
+          {{ item.value.value }}
         </el-descriptions-item>
-        <el-descriptions-item width="160px" label="村名称">
-          {{ name_village }}
-        </el-descriptions-item>
-        <el-descriptions-item width="160px" label="pH 值">
-          {{ mea_ph }}
-        </el-descriptions-item>
-        <el-descriptions-item label="碱解氮含量 (mg/kg)">
-          {{ mea_Effective_N }}
-        </el-descriptions-item>
-        <el-descriptions-item label="有效磷含量 (mg/kg)">
-          {{ mea_Olsen_P }}
-        </el-descriptions-item>
-        <el-descriptions-item label="速效钾含量 (mg/kg)">
-          {{ mea_Olsen_K }}
-        </el-descriptions-item>
-        <el-descriptions-item label="有机质含量 (g/kg)">
-          {{ mea_Organic_matter }}
-        </el-descriptions-item>
-        <!-- <el-descriptions-item label="代替测量点的经度">
-          {{ currJingwei.jing }}
-        </el-descriptions-item>
-        <el-descriptions-item label="代替测量点的纬度">
-          {{ currJingwei.wei }}
-        </el-descriptions-item> -->
       </el-descriptions>
 
       <el-button
@@ -81,33 +62,14 @@
     <div class="hidden-sm-and-up">
       <!-- 土地指标 -->
       <el-descriptions title="土地指标" :column="2" size="medium" border>
-        <el-descriptions-item width="160px" label="乡/镇名称">
-          {{ name_countryside }}
+        <el-descriptions-item
+          v-for="item in measure_value"
+          :key="item.value"
+          width="160px"
+          :label="item.label"
+        >
+          {{ item.value.value }}
         </el-descriptions-item>
-        <el-descriptions-item width="160px" label="村名称">
-          {{ name_village }}
-        </el-descriptions-item>
-        <el-descriptions-item width="160px" label="pH 值">
-          {{ mea_ph }}
-        </el-descriptions-item>
-        <el-descriptions-item label="碱解氮含量 (mg/kg)">
-          {{ mea_Effective_N }}
-        </el-descriptions-item>
-        <el-descriptions-item label="有效磷含量 (mg/kg)">
-          {{ mea_Olsen_P }}
-        </el-descriptions-item>
-        <el-descriptions-item label="速效钾含量 (mg/kg)">
-          {{ mea_Olsen_K }}
-        </el-descriptions-item>
-        <el-descriptions-item label="有机质含量 (g/kg)">
-          {{ mea_Organic_matter }}
-        </el-descriptions-item>
-        <!-- <el-descriptions-item label="代替测量点的经度">
-          {{ currJingwei.jing }}
-        </el-descriptions-item>
-        <el-descriptions-item label="代替测量点的纬度">
-          {{ currJingwei.wei }}
-        </el-descriptions-item> -->
       </el-descriptions>
 
       <el-button
@@ -191,7 +153,13 @@ import { ref } from "vue";
 import { ElMessageBox, ElLoading } from "element-plus";
 import message from "../../hooks/useMessage";
 import { queryFun1, updateExpertSuggest } from "../../api";
-import { currJingwei, info, updateData } from "./state/fun1-state";
+import {
+  currJingwei,
+  info,
+  sugest_value,
+  updateData,
+  measure_value,
+} from "./state/fun1-state";
 import { assignResult } from "./utils";
 import { userState } from "../../hooks/useUserState";
 
@@ -293,7 +261,8 @@ export default {
       showUpdateTable,
       handleEdit,
       userState,
-      ...info,
+      ...sugest_value,
+      measure_value,
       currJingwei,
       updateData,
     };

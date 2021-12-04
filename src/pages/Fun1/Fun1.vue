@@ -108,8 +108,8 @@ import Fun1Map from "./Fun1Map.vue";
 import Fun1ShowMessage from "./Fun1ShowMessage.vue";
 import message from "../../hooks/useMessage";
 import { userState } from "../../hooks/useUserState";
-import { queryFun1 } from "../../api";
-import { options } from "./config/fun1-config";
+import { queryFun1, getCrops } from "../../api";
+import { options, addOptions } from "./config/fun1-config";
 import {
   clearInfo,
   assignResult,
@@ -126,7 +126,22 @@ export default {
     Fun1ShowMessage,
   },
   setup() {
-    let crop = ref("玉米");
+    let crop = ref("");
+    getCrops()
+    .then(value => {
+      if(value.code == 200){
+        addOptions(value.data)
+        crop.value = value.data[0]
+      }
+      else{
+        message('error', value.msg)
+        console.warn('获取作物code非200', value)
+      }
+    })
+    .catch(err => {
+      message('error', '作物获取失败')
+      console.warn(err)
+    })
 
     const mapRef = ref(null);
 

@@ -58,7 +58,17 @@ function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue })
   })
 }
 
+function getCrops(){
+  return zwRequest.request({
+    method: 'GET',
+    url: '/getEnableCropTypeName',
+  })
+}
+
+
+
 export {
   queryFun1,
-  updateExpertSuggest
+  updateExpertSuggest,
+  getCrops
 }
