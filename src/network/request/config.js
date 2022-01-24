@@ -7,7 +7,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 else if (process.env.NODE_ENV == 'production') {
   // 生产版本 baseURL
-  BASE_URL = "http://120.79.189.55:10086/content1-2.0"
+  BASE_URL = "https://semghh.xyz:10086/content1-2.0"
   TIME_OUT = 100000
 }
 

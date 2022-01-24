@@ -57,7 +57,8 @@ export default {
     const toFun1 = useToFun1(router);
 
     const userInfo = ref({
-      username: window.localStorage.getItem("username") || "",
+      // username: "123",
+      username: cache.getCache("username") || "",
       pass: "",
       code: "",
     });
