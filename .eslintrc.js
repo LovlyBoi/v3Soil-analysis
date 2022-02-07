@@ -9,16 +9,16 @@ module.exports = {
     ],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "process": true
     },
     "parserOptions": {
-        "ecmaVersion": 2021,
+        "ecmaVersion": 2020,
         "sourceType": "module"
     },
     "plugins": [
         "vue"
     ],
     "rules": {
-      "vue/no-multiple-template-root": false
     }
 };
