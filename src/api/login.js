@@ -13,7 +13,7 @@ function userLogin(userInfo) {
     },
     interceptors: {
       responseInterceptors(data) {
-        if (data.code == 200) {
+        if (data.code === 200) {
           message('success', data.msg)
         } else {
           message('error', data.msg)
@@ -35,9 +35,9 @@ function checkCookieLogin() {
     },
     interceptors: {
       responseInterceptors(res) {
-        if (res.code == 202) {
+        if (res.code === 202) {
           message('warning', '自动登陆失败，请重新登陆')
-        } else if (res.code == 201) {
+        } else if (res.code === 201) {
           message('success', '登陆成功')
         }
         return res

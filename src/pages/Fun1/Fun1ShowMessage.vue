@@ -184,7 +184,7 @@ export default {
     // 修改数据函数
     function handleEdit(index, row) {
       // 当前查询经纬度为空
-      if (currJingwei.jing == '') {
+      if (currJingwei.jing === '') {
         message('warning', '还没有查询哦~')
         return
       }
@@ -218,7 +218,7 @@ export default {
         })
         .then(
           (data) => {
-            if (data.code != 200) {
+            if (data.code !== 200) {
               return Promise.reject(data)
             }
 
@@ -240,7 +240,7 @@ export default {
         )
         .then(
           (data) => {
-            if (data.code != 200) {
+            if (data.code !== 200) {
               return Promise.reject(data)
             }
             // 拆包赋值，更新数据

@@ -111,7 +111,7 @@ export default {
         // 提交请求
         register(userInfo)
           .then((data) => {
-            if (data.code == '201') {
+            if (data.code === '201') {
               // 注册成功
               // 更改登录信息
               setLogin(true)

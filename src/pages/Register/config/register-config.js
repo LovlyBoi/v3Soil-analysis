@@ -48,7 +48,7 @@ function useRules(formRef, registerInfo, loadingbtn) {
       .then(
         (data) => {
           // 对返回值进行判断
-          if (data.code == '200') {
+          if (data.code === '200') {
             return callback()
           } else {
             callback(new Error(data.msg))
@@ -76,7 +76,7 @@ function useRules(formRef, registerInfo, loadingbtn) {
     checkUsernameRepeat(value)
       .then((data) => {
         // 对返回值进行判断
-        if (data.code == '200') {
+        if (data.code === '200') {
           return callback()
         } else {
           callback(new Error(data.msg))

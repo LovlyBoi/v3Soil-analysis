@@ -129,7 +129,7 @@ export default {
     let crop = ref('')
     getCrops()
       .then((value) => {
-        if (value.code == 200) {
+        if (value.code === 200) {
           addOptions(value.data)
           crop.value = value.data[0]
         } else {
@@ -175,7 +175,7 @@ export default {
       queryFun1(jingwei.jing, jingwei.wei, crop.value)
         // 成功
         .then((data) => {
-          if (data.code != 200) {
+          if (data.code !== 200) {
             return Promise.reject(data)
           }
           let res = data.data

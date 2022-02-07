@@ -5,7 +5,7 @@ function exitLogin() {
   // 状态退出
   setLogin(false)
   // 清除cookie
-  document.cookie = `u=;JSESSIONID=;`
+  document.cookie = 'u=;JSESSIONID=;'
   message('success', '退出登录')
 }
 

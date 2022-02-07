@@ -10,8 +10,8 @@ import { onMounted } from 'vue'
 import message from '../../hooks/useMessage'
 import { isOutOfBound } from './utils'
 
-let map = null,
-  markers = null
+let map = null
+let markers = null
 
 export default {
   emits: ['mapClick'],

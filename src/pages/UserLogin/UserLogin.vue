@@ -78,12 +78,12 @@ export default {
       })
         .then((data) => {
           // 密码错误，不进catch
-          if (data.code == 202) {
+          if (data.code === 202) {
             userInfo.value.pass = ''
             return
           }
           // 其他错误，进catch
-          if (data.code != 200) {
+          if (data.code !== 200) {
             return Promise.reject(data)
           }
           // 登陆成功

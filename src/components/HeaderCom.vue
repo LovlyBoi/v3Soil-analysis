@@ -51,7 +51,7 @@ import exitLogin from '../hooks/useExitLogin'
 import { cache } from '../utils/cache'
 
 export default {
-  name: 'Header',
+  name: 'HeaderCom',
   setup() {
     // 拿到router
     const router = useRouter()

@@ -15,7 +15,7 @@ function queryFun1(jing, wei, crop, showMessage = true, showLoading = true) {
   if (showMessage) {
     config.interceptors = {
       responseInterceptors(data) {
-        if (data.code == 200) {
+        if (data.code === 200) {
           message('success', data.msg)
         } else {
           message('error', data.msg)
@@ -51,7 +51,7 @@ function updateExpertSuggest({
     },
     interceptors: {
       responseInterceptors(data) {
-        if (data.code == 200) {
+        if (data.code === 200) {
           message('success', data.msg)
         } else {
           message('error', data.msg)

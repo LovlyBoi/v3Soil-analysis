@@ -14,7 +14,7 @@ function register(userInfo) {
     },
     interceptors: {
       responseInterceptors(data) {
-        if (data.code == 201) {
+        if (data.code === 201) {
           message('success', data.msg)
         } else {
           message('error', data.msg)
