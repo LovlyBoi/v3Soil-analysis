@@ -1,5 +1,5 @@
 import { zwRequest } from '../network'
-import message from '../hooks/useMessage';
+import message from '../hooks/useMessage'
 
 // fun1查询
 function queryFun1(jing, wei, crop, showMessage = true, showLoading = true) {
@@ -9,30 +9,35 @@ function queryFun1(jing, wei, crop, showMessage = true, showLoading = true) {
     data: {
       longitude: jing + '',
       latitude: wei + '',
-      cropName: crop
-    }
+      cropName: crop,
+    },
   }
   if (showMessage) {
     config.interceptors = {
       responseInterceptors(data) {
         if (data.code == 200) {
           message('success', data.msg)
-        }
-        else {
+        } else {
           message('error', data.msg)
         }
         return data
-      }
+      },
     }
   }
-  if(!showLoading){
+  if (!showLoading) {
     config.showLoading = false
   }
   return zwRequest.request(config)
 }
 
 // 专家修改建议值
-function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue }) {
+function updateExpertSuggest({
+  jing,
+  wei,
+  elementName,
+  cropName,
+  suggestValue,
+}) {
   return zwRequest.request({
     method: 'POST',
     url: '/newExpertSuggest',
@@ -48,27 +53,20 @@ function updateExpertSuggest({ jing, wei, elementName, cropName, suggestValue })
       responseInterceptors(data) {
         if (data.code == 200) {
           message('success', data.msg)
-        }
-        else {
+        } else {
           message('error', data.msg)
         }
         return data
-      }
-    }
+      },
+    },
   })
 }
 
-function getCrops(){
+function getCrops() {
   return zwRequest.request({
     method: 'GET',
     url: '/getEnableCropTypeName',
   })
 }
 
-
-
-export {
-  queryFun1,
-  updateExpertSuggest,
-  getCrops
-}
+export { queryFun1, updateExpertSuggest, getCrops }

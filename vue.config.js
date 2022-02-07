@@ -11,10 +11,10 @@ module.exports = {
           target: 'https://semghh.xyz:10086/content1-2.0/',
           changeOrigin: true,
           pathRewrite: {
-            '^/api': ''
-          }
-        }
-      }
+            '^/api': '',
+          },
+        },
+      },
     },
     plugins: [
       Components({
@@ -23,5 +23,5 @@ module.exports = {
     ],
     // devtool: 'source-map'
   },
-  productionSourceMap: false
+  productionSourceMap: false,
 }

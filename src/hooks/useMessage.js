@@ -6,8 +6,8 @@ function message(type, message, duration = 1500) {
     message,
     type,
     duration,
-    offset: 80
-  });
+    offset: 80,
+  })
 }
 
 export default message

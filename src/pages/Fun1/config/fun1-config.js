@@ -20,14 +20,13 @@ export const options = reactive([
   //   value: "糯玉米",
   //   label: "糯玉米",
   // },
-]);
+])
 
-export function addOptions(crops){
-  for(const crop of crops){
+export function addOptions(crops) {
+  for (const crop of crops) {
     options.push({
       value: crop,
-      label: crop
+      label: crop,
     })
   }
 }
-

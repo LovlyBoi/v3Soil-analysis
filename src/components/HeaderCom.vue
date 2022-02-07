@@ -41,30 +41,30 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import { useRouter } from "vue-router";
-import { InfoFilled } from "@element-plus/icons";
-import { currEl } from "../hooks/useCurrEl";
-import { userState } from "../hooks/useUserState";
-import { useGoto } from "../hooks/useToFun";
-import exitLogin from "../hooks/useExitLogin";
-import { cache } from "../utils/cache";
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { InfoFilled } from '@element-plus/icons'
+import { currEl } from '../hooks/useCurrEl'
+import { userState } from '../hooks/useUserState'
+import { useGoto } from '../hooks/useToFun'
+import exitLogin from '../hooks/useExitLogin'
+import { cache } from '../utils/cache'
 
 export default {
-  name: "Header",
+  name: 'Header',
   setup() {
     // 拿到router
-    const router = useRouter();
-    const goto = useGoto(router);
+    const router = useRouter()
+    const goto = useGoto(router)
 
     // 登录点击事件
     function showLogin() {
-      goto(-1);
+      goto(-1)
     }
 
     // 注册点击事件
     function showRegister() {
-      goto(-2);
+      goto(-2)
     }
 
     // 优先去去 userState 找，没有再本地存储中找，再没有返回 “尊敬的客户”，这样避免了切换用户时得刷新才能拿到数据（不知道怎么把本地存储变成响应式）
@@ -72,13 +72,13 @@ export default {
       if (window.localStorage) {
         return (
           userState.value.userInfo.username ||
-          cache.getCache("username") ||
-          "尊敬的客户"
-        );
+          cache.getCache('username') ||
+          '尊敬的客户'
+        )
       } else {
-        return userState.value.userInfo.username || "尊敬的客户";
+        return userState.value.userInfo.username || '尊敬的客户'
       }
-    });
+    })
 
     return {
       currEl,
@@ -88,9 +88,9 @@ export default {
       username,
       userState,
       InfoFilled,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

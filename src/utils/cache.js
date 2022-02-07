@@ -8,13 +8,13 @@ class Cache {
   }
 
   getCache(key, isLocal = true) {
-    let value;
+    let value
     if (isLocal) {
       value = window.localStorage.getItem(key)
     } else {
       value = window.sessionStorage.getItem(key)
     }
-    if(value) {
+    if (value) {
       return JSON.parse(value)
     }
   }
@@ -36,8 +36,6 @@ class Cache {
   }
 }
 
-const cache = new Cache
+const cache = new Cache()
 
-export {
-  cache
-}
+export { cache }

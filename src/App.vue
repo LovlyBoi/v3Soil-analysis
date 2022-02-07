@@ -29,18 +29,17 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
-import { useRouter } from "vue-router";
-import headerCom from "./components/HeaderCom";
-import sideBar from "./components/SideBar";
-import { checkCookieLogin } from "./api";
-import { setLogin, setUserInfo } from "./hooks/useUserState";
-
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import headerCom from './components/HeaderCom'
+import sideBar from './components/SideBar'
+import { checkCookieLogin } from './api'
+import { setLogin, setUserInfo } from './hooks/useUserState'
 
 // import Test from './components/test.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     headerCom,
     sideBar,
@@ -49,32 +48,32 @@ export default {
   },
   setup() {
     // 拿到Router对象
-    const router = useRouter();
+    const router = useRouter()
 
     // 尝试 cookie 登录
     async function cookieLogin() {
-      let res = await checkCookieLogin();
-      if (res.code == "202") {
-        console.log("cookie 登陆失败");
-        return;
-      } else if (res.code == "201") {
-        console.log("cookie 登陆成功");
-        setLogin(true);
+      let res = await checkCookieLogin()
+      if (res.code == '202') {
+        console.log('cookie 登陆失败')
+        return
+      } else if (res.code == '201') {
+        console.log('cookie 登陆成功')
+        setLogin(true)
         // cookie登录设置身份
         setUserInfo({
           username: res.data.username,
           role: res.data.roles,
-        });
+        })
       }
       // 跳转页面到/fun1
-      router.replace("/fun1");
+      router.replace('/fun1')
     }
 
     onMounted(() => {
-      cookieLogin();
-    });
+      cookieLogin()
+    })
   },
-};
+}
 </script>
 
 <style>
@@ -116,5 +115,11 @@ export default {
   color: #222;
   text-align: center;
   line-height: 18px;
+}
+
+/* 由于我没有找到关闭控件的API，就在这用css干掉了 */
+.rotate-circle,
+.tmap-zoom-control {
+  display: none !important;
 }
 </style>

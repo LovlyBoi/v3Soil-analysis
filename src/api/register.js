@@ -1,5 +1,5 @@
 import { zwRequest } from '../network'
-import message from '../hooks/useMessage';
+import message from '../hooks/useMessage'
 
 // 注册
 function register(userInfo) {
@@ -10,7 +10,7 @@ function register(userInfo) {
       username: userInfo.username,
       password: userInfo.password,
       id_card: userInfo.ID,
-      peasantName: userInfo.peasantName
+      peasantName: userInfo.peasantName,
     },
     interceptors: {
       responseInterceptors(data) {
@@ -20,8 +20,8 @@ function register(userInfo) {
           message('error', data.msg)
         }
         return data
-      }
-    }
+      },
+    },
   })
 }
 
@@ -32,8 +32,8 @@ function checkUsernameRepeat(username) {
     url: '/checkRepeatUsername',
     showLoading: false,
     data: {
-      username
-    }
+      username,
+    },
   })
 }
 
@@ -44,9 +44,9 @@ function checkIDCard(ID) {
     url: '/checkRepeatId_card',
     showLoading: false,
     data: {
-      "id_card": ID
-    }
+      id_card: ID,
+    },
   })
 }
 
-export {register, checkIDCard, checkUsernameRepeat}
+export { register, checkIDCard, checkUsernameRepeat }

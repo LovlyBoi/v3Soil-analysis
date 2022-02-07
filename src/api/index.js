@@ -12,5 +12,5 @@ export {
   queryFun1,
   queryFun2,
   updateExpertSuggest,
-  getCrops
+  getCrops,
 }

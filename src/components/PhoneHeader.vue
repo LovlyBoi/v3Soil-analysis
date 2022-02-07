@@ -38,45 +38,45 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { InfoFilled } from "@element-plus/icons";
-import { useToFun1, useToFun2, useGoto } from "../hooks/useToFun";
-import { userState } from "../hooks/useUserState";
-import exitLogin from "../hooks/useExitLogin";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { InfoFilled } from '@element-plus/icons'
+import { useToFun1, useToFun2, useGoto } from '../hooks/useToFun'
+import { userState } from '../hooks/useUserState'
+import exitLogin from '../hooks/useExitLogin'
 
 export default {
   setup() {
-    const router = useRouter();
-    const goto = useGoto(router);
+    const router = useRouter()
+    const goto = useGoto(router)
 
-    let toggler = ref(null);
+    let toggler = ref(null)
 
     function closeToggler() {
-      toggler.value.checked = false;
+      toggler.value.checked = false
     }
 
-    function coverClickHandle(){
+    function coverClickHandle() {
       toggler.value.checked = false
     }
 
     let toFun1 = function () {
-      useToFun1(router)();
-      closeToggler();
-    };
+      useToFun1(router)()
+      closeToggler()
+    }
 
     let toFun2 = function () {
-      useToFun2(router)();
-      closeToggler();
-    };
+      useToFun2(router)()
+      closeToggler()
+    }
 
     let showLogin = function () {
-      goto(-1);
-    };
+      goto(-1)
+    }
 
     let showRegister = function () {
-      goto(-2);
-    };
+      goto(-2)
+    }
 
     return {
       toggler,
@@ -87,10 +87,10 @@ export default {
       showLogin,
       showRegister,
       InfoFilled,
-      coverClickHandle
-    };
+      coverClickHandle,
+    }
   },
-};
+}
 </script>
 
 <style scoped>

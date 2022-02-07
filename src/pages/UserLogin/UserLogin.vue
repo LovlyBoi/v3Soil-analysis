@@ -41,35 +41,35 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { userLogin } from "../../api";
-import { setLogin, setUserInfo } from "../../hooks/useUserState";
-import message from "../../hooks/useMessage";
-import { useToFun1 } from "../../hooks/useToFun";
-import { rules } from "./config/login-config";
-import { cache } from "../../utils/cache";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { userLogin } from '../../api'
+import { setLogin, setUserInfo } from '../../hooks/useUserState'
+import message from '../../hooks/useMessage'
+import { useToFun1 } from '../../hooks/useToFun'
+import { rules } from './config/login-config'
+import { cache } from '../../utils/cache'
 
 export default {
-  name: "UserLogin",
+  name: 'UserLogin',
   setup() {
-    const router = useRouter();
-    const toFun1 = useToFun1(router);
+    const router = useRouter()
+    const toFun1 = useToFun1(router)
 
     const userInfo = ref({
       // username: "123",
-      username: cache.getCache("username") || "",
-      pass: "",
-      code: "",
-    });
-    const remember = ref(false);
-    const disablebtn = ref(false);
-    const formRef = ref(null);
+      username: cache.getCache('username') || '',
+      pass: '',
+      code: '',
+    })
+    const remember = ref(false)
+    const disablebtn = ref(false)
+    const formRef = ref(null)
 
     // 登录
     function login(userName, passWord, rememberMe) {
       // 禁用表单
-      disablebtn.value = true;
+      disablebtn.value = true
       // 账号密码登录，发送请求
       userLogin({
         username: userName,
@@ -79,44 +79,44 @@ export default {
         .then((data) => {
           // 密码错误，不进catch
           if (data.code == 202) {
-            userInfo.value.pass = "";
-            return;
+            userInfo.value.pass = ''
+            return
           }
           // 其他错误，进catch
           if (data.code != 200) {
-            return Promise.reject(data);
+            return Promise.reject(data)
           }
           // 登陆成功
           // 更改登录信息
-          setLogin(true);
+          setLogin(true)
           // 路由导航到 fun1，设置高亮
-          toFun1();
+          toFun1()
           // 提交用户信息到 userState
           setUserInfo({
             username: userName,
             role: data.data.roles,
-          });
+          })
           // 提交用户信息到 localStorage
-          cache.setCache("username", userName || "");
+          cache.setCache('username', userName || '')
         })
         .catch((reason) => {
-          message("error", "登录失败");
-          console.warn("登录请求错误", reason);
+          message('error', '登录失败')
+          console.warn('登录请求错误', reason)
         })
         .finally(() => {
           // 解禁按钮
-          disablebtn.value = false;
-        });
+          disablebtn.value = false
+        })
     }
 
     function submit() {
       formRef.value.validate((valid) => {
         if (!valid) {
-          message("error", "请完善信息哦");
-          return;
+          message('error', '请完善信息哦')
+          return
         }
-        login(userInfo.value.username, userInfo.value.pass, remember.value);
-      });
+        login(userInfo.value.username, userInfo.value.pass, remember.value)
+      })
     }
 
     return {
@@ -126,9 +126,9 @@ export default {
       disablebtn,
       submit,
       rules,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

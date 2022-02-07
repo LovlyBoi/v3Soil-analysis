@@ -176,25 +176,25 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { queryFun2 } from "../../api";
-import { userState } from "../../hooks/useUserState";
-import message from "../../hooks/useMessage";
-import { options } from "./config/fun2-config";
-import { data as state } from "./state/fun2-state";
-import { checkDataRule, assignResult } from "./utils";
+import { ref } from 'vue'
+import { queryFun2 } from '../../api'
+import { userState } from '../../hooks/useUserState'
+import message from '../../hooks/useMessage'
+import { options } from './config/fun2-config'
+import { data as state } from './state/fun2-state'
+import { checkDataRule, assignResult } from './utils'
 
 export default {
-  name: "Fun2",
+  name: 'Fun2',
   setup() {
-    const crop = ref("大豆");
+    const crop = ref('大豆')
 
     // 提交信息
     function commitInfo() {
       // 判断是否登录
       if (!userState.value.isLogin) {
-        message("error", "请先登录");
-        return;
+        message('error', '请先登录')
+        return
       }
 
       // 装进数组里，方便下面判断
@@ -203,26 +203,27 @@ export default {
         state.mea_Olsen_P.value,
         state.mea_Olsen_K.value,
         state.mea_Organic_matter.value,
-      ];
+      ]
 
       // 检测格式
       if (!checkDataRule(meaArr)) {
-        return;
+        return
       }
 
       // 检测完格式了，发送请求
       queryFun2(...meaArr, crop.value)
         .then((data) => {
           if (data.code != 200) {
-            return Promise.reject(data);
+            return Promise.reject(data)
           }
-          let res = data.data;
+          let res = data.data
           assignResult(state, res)
+          message('success', '查询成功')
         })
         .catch((reason) => {
-          message("error", "功能二查询失败");
-          console.warn("fun2查询失败", reason);
-        });
+          message('error', '功能二查询失败')
+          console.warn('fun2查询失败', reason)
+        })
     }
 
     return {
@@ -230,9 +231,9 @@ export default {
       options,
       crop,
       commitInfo,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

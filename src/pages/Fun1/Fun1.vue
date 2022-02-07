@@ -103,85 +103,84 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
-import Fun1Map from "./Fun1Map.vue";
-import Fun1ShowMessage from "./Fun1ShowMessage.vue";
-import message from "../../hooks/useMessage";
-import { userState } from "../../hooks/useUserState";
-import { queryFun1, getCrops } from "../../api";
-import { options, addOptions } from "./config/fun1-config";
+import { ref, reactive } from 'vue'
+import Fun1Map from './Fun1Map.vue'
+import Fun1ShowMessage from './Fun1ShowMessage.vue'
+import message from '../../hooks/useMessage'
+import { userState } from '../../hooks/useUserState'
+import { queryFun1, getCrops } from '../../api'
+import { options, addOptions } from './config/fun1-config'
 import {
   clearInfo,
   assignResult,
   checkJingWeiRule,
   isOutOfBound,
   addPoint,
-} from "./utils";
-import { info, currJingwei } from "./state/fun1-state";
+} from './utils'
+import { info, currJingwei } from './state/fun1-state'
 
 export default {
-  name: "Fun1",
+  name: 'Fun1',
   components: {
     Fun1Map,
     Fun1ShowMessage,
   },
   setup() {
-    let crop = ref("");
+    let crop = ref('')
     getCrops()
-    .then(value => {
-      if(value.code == 200){
-        addOptions(value.data)
-        crop.value = value.data[0]
-      }
-      else{
-        message('error', value.msg)
-        console.warn('获取作物code非200', value)
-      }
-    })
-    .catch(err => {
-      message('error', '作物获取失败')
-      console.warn(err)
-    })
+      .then((value) => {
+        if (value.code == 200) {
+          addOptions(value.data)
+          crop.value = value.data[0]
+        } else {
+          message('error', value.msg)
+          console.warn('获取作物code非200', value)
+        }
+      })
+      .catch((err) => {
+        message('error', '作物获取失败')
+        console.warn(err)
+      })
 
-    const mapRef = ref(null);
+    const mapRef = ref(null)
 
     // 点击地图的经纬度
     const jingwei = reactive({
-      jing: "",
-      wei: "",
-    });
+      jing: '',
+      wei: '',
+    })
 
     // 发送 fun1 查询
     function commitJingWei() {
       // 检查经纬度格式
       if (!checkJingWeiRule(jingwei.jing, jingwei.wei)) {
-        return;
+        return
       }
 
       if (isOutOfBound(jingwei.jing, jingwei.wei)) {
-        message("warning", "经纬度超出检测范围");
-        return;
+        message('warning', '经纬度超出检测范围')
+        return
       }
 
       // 判断是否登录
       if (!userState.value.isLogin) {
-        message("error", "请先登录");
-        return;
+        message('error', '请先登录')
+        return
       }
 
       // 清除展示框内的信息
-      clearInfo(info, currJingwei);
+      clearInfo(info, currJingwei)
 
       // 发送查询请求
       queryFun1(jingwei.jing, jingwei.wei, crop.value)
         // 成功
         .then((data) => {
           if (data.code != 200) {
-            return Promise.reject(data);
+            return Promise.reject(data)
           }
-          let res = data.data;
+          let res = data.data
           // 不是直接测量点，什么都不做
-          if (res.isDirectMeasured === "false") {
+          if (res.isDirectMeasured === 'false') {
             // message(
             //   "warning",
             //   "暂无该地点的参考值，已为您寻找最近的参考点",
@@ -190,28 +189,27 @@ export default {
           }
 
           // 赋值本次查询的值
-          currJingwei.jing = res.min_Longitude;
-          currJingwei.wei = res.min_Latitude;
+          currJingwei.jing = res.min_Longitude
+          currJingwei.wei = res.min_Latitude
 
-          let wei = res.min_Latitude ?? jingwei.wei;
-          let jing = res.min_Longitude ?? jingwei.jing;
+          let wei = res.min_Latitude ?? jingwei.wei
+          let jing = res.min_Longitude ?? jingwei.jing
           // 在地图上加点
           addPoint(mapRef, jing, wei)
 
           // 数据赋值
-          assignResult(info, res);
+          assignResult(info, res)
         })
         // 失败
         .catch((reason) => {
-          console.warn("功能一查询失败", reason);
-          message("error", "fun1查询失败");
-        });
+          console.warn('功能一查询失败', reason)
+          message('error', 'fun1查询失败')
+        })
     }
 
-
     function mapClickHandle({ jing, wei }) {
-      jingwei.jing = jing;
-      jingwei.wei = wei;
+      jingwei.jing = jing
+      jingwei.wei = wei
     }
 
     return {
@@ -221,9 +219,9 @@ export default {
       options,
       crop,
       commitJingWei,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

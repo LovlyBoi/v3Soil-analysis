@@ -7,8 +7,14 @@ class ZwRequest {
     this.interceptors = config.interceptors
     // 添加实例拦截器
     if (this.interceptors) {
-      this.instance.interceptors.request.use(this.interceptors.requestInterceptors, this.interceptors.requestInterceptorsCatch)
-      this.instance.interceptors.response.use(this.interceptors.responseInterceptors, this.interceptors.responseInterceptorsCatch)
+      this.instance.interceptors.request.use(
+        this.interceptors.requestInterceptors,
+        this.interceptors.requestInterceptorsCatch
+      )
+      this.instance.interceptors.response.use(
+        this.interceptors.responseInterceptors,
+        this.interceptors.responseInterceptorsCatch
+      )
     }
   }
 
@@ -27,23 +33,34 @@ class ZwRequest {
           background: 'rgba(0, 0, 0, 0.7)',
         })
       }
-      this.instance.request(config).then((res) => {
-        if (config.interceptors && config.interceptors.responseInterceptors) {
-          res = config.interceptors.responseInterceptors(res)
-        }
-        resolve(res)
-      }, (reason) => {
-        if (config.interceptors && config.interceptors.responseInterceptorsCatch) {
-          reason = config.interceptors.responseInterceptorsCatch(reason)
-        }
-        reject(reason)
-      }).finally(() => {
-        if(loadingInstence){
-          loadingInstence.close()
-        }
-      })
+      this.instance
+        .request(config)
+        .then(
+          (res) => {
+            if (
+              config.interceptors &&
+              config.interceptors.responseInterceptors
+            ) {
+              res = config.interceptors.responseInterceptors(res)
+            }
+            resolve(res)
+          },
+          (reason) => {
+            if (
+              config.interceptors &&
+              config.interceptors.responseInterceptorsCatch
+            ) {
+              reason = config.interceptors.responseInterceptorsCatch(reason)
+            }
+            reject(reason)
+          }
+        )
+        .finally(() => {
+          if (loadingInstence) {
+            loadingInstence.close()
+          }
+        })
     })
-
   }
 }
 

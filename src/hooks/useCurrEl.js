@@ -1,14 +1,11 @@
 // 用来展示组件
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const currEl = ref(1)
 
 // 设置高亮元素接口
-function setCurrEl(newVal){
+function setCurrEl(newVal) {
   currEl.value = newVal
 }
 
-export {
-  currEl,
-  setCurrEl,
-}
+export { currEl, setCurrEl }

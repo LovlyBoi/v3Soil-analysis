@@ -10,21 +10,21 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import { useToFun1 } from "../../hooks/useToFun";
+import { useRouter } from 'vue-router'
+import { useToFun1 } from '../../hooks/useToFun'
 export default {
-  name: "NotFound",
+  name: 'NotFound',
   setup() {
-    const router = useRouter();
-    const toFun1 = useToFun1(router);
-    
+    const router = useRouter()
+    const toFun1 = useToFun1(router)
+
     function backToFun1() {
-      toFun1();
+      toFun1()
     }
 
-    return { backToFun1 };
+    return { backToFun1 }
   },
-};
+}
 </script>
 
 <style scoped>

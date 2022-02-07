@@ -11,6 +11,6 @@ export function queryFun2(MEN, MOP, MOK, MOM, crop) {
       mea_Olsen_K: MOK,
       mea_Organic_matter: MOM,
       cropName: crop,
-    }
+    },
   })
 }

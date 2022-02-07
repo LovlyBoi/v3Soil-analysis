@@ -1,62 +1,62 @@
 import { ref, reactive } from 'vue'
 
 const info = {
-  name_countryside: ref(""),
-  name_village: ref(""),
+  name_countryside: ref(''),
+  name_village: ref(''),
 
-  mea_Effective_N: ref(""),
-  mea_Olsen_P: ref(""),
-  mea_Olsen_K: ref(""),
-  mea_Organic_matter: ref(""),
-  mea_ph: ref(""),
+  mea_Effective_N: ref(''),
+  mea_Olsen_P: ref(''),
+  mea_Olsen_K: ref(''),
+  mea_Organic_matter: ref(''),
+  mea_ph: ref(''),
 
-  sug_Effective_N: ref(""),
-  sug_Olsen_P: ref(""),
-  sug_Olsen_K: ref(""),
-  sug_Organic_matter: ref("")
+  sug_Effective_N: ref(''),
+  sug_Olsen_P: ref(''),
+  sug_Olsen_K: ref(''),
+  sug_Organic_matter: ref(''),
 }
 
 const sugest_value = {
   sug_Effective_N: info.sug_Effective_N,
   sug_Olsen_P: info.sug_Olsen_P,
   sug_Olsen_K: info.sug_Olsen_P,
-  sug_Organic_matter: info.sug_Olsen_P
+  sug_Organic_matter: info.sug_Olsen_P,
 }
 
 // 本次查询的经纬度
 let currJingwei = reactive({
-  jing: "",
-  wei: "",
-});
+  jing: '',
+  wei: '',
+})
 
 const measure_value = [
   {
     label: '乡/镇名称',
-    value: info.name_countryside
+    value: info.name_countryside,
   },
   {
     label: '村名称',
-    value: info.name_village
+    value: info.name_village,
   },
   {
     label: 'pH 值',
-    value: info.mea_ph
+    value: info.mea_ph,
   },
   {
     label: '碱解氮含量 (mg/kg)',
-    value: info.mea_Effective_N
+    value: info.mea_Effective_N,
   },
   {
     label: '有效磷含量 (mg/kg)',
-    value: info.mea_Olsen_P
+    value: info.mea_Olsen_P,
   },
   {
     label: '速效钾含量 (mg/kg)',
-    value: info.mea_Olsen_K
+    value: info.mea_Olsen_K,
   },
   {
     label: '有机质含量 (g/kg)',
-    value: info.mea_Organic_matter
+    value: info.mea_Organic_matter,
   },
   // {
   //   label: '代替测量点的经度',
@@ -71,29 +71,21 @@ const measure_value = [
 // 专家修改数据
 const updateData = ref([
   {
-    name: "碱解氮",
-    elementName: "Effective_N",
+    name: '碱解氮',
+    elementName: 'Effective_N',
     // 值为ref对象，所以是会自己跟着改的
     suggestValue: info.sug_Effective_N,
   },
   {
-    name: "有效磷",
-    elementName: "Olsen_P",
+    name: '有效磷',
+    elementName: 'Olsen_P',
     suggestValue: info.sug_Olsen_P,
   },
   {
-    name: "速效钾",
-    elementName: "Olsen_K",
+    name: '速效钾',
+    elementName: 'Olsen_K',
     suggestValue: info.sug_Olsen_K,
-  }
-]);
+  },
+])
 
-
-
-export {
-  info,
-  sugest_value,
-  updateData,
-  currJingwei,
-  measure_value
-}
+export { info, sugest_value, updateData, currJingwei, measure_value }

@@ -14,33 +14,33 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import { MapLocation, PieChart } from "@element-plus/icons";
-import { currEl } from "../hooks/useCurrEl";
-import { useGoto } from "../hooks/useToFun";
+import { useRouter } from 'vue-router'
+import { MapLocation, PieChart } from '@element-plus/icons'
+import { currEl } from '../hooks/useCurrEl'
+import { useGoto } from '../hooks/useToFun'
 
 export default {
-  name: "SideBar",
+  name: 'SideBar',
   components: {
     MapLocation,
-    PieChart
+    PieChart,
   },
   setup() {
-    const router = useRouter();
+    const router = useRouter()
 
-    const goto = useGoto(router);
+    const goto = useGoto(router)
 
     function handleSelect(index) {
-      index = Number.parseInt(index);
-      goto(index);
+      index = Number.parseInt(index)
+      goto(index)
     }
 
     return {
       currEl,
       handleSelect,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
