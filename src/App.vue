@@ -53,10 +53,10 @@ export default {
     // 尝试 cookie 登录
     async function cookieLogin() {
       let res = await checkCookieLogin()
-      if (res.code === '202') {
+      if (res.code === 202) {
         console.log('cookie 登陆失败')
         return
-      } else if (res.code === '201') {
+      } else if (res.code === 201) {
         console.log('cookie 登陆成功')
         setLogin(true)
         // cookie登录设置身份
