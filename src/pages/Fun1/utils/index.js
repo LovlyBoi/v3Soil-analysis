@@ -17,6 +17,11 @@ function clearInfo(data, currJingwei) {
   data.sug_Olsen_K.value = ''
   data.sug_Organic_matter.value = ''
 
+  data.sug_niaoSu.value = ''
+  data.sug_erAn.value = ''
+  data.sug_KCL.value = ''
+  data.sug_K2SO4.value = ''
+
   currJingwei.jing = ''
   currJingwei.wei = ''
 }
@@ -38,6 +43,11 @@ function assignResult(data, res) {
   data.sug_Olsen_P.value = res.sug_Olsen_P
   data.sug_Olsen_K.value = res.sug_Olsen_K
   data.sug_Organic_matter.value = res.sug_organic_matter
+
+  data.sug_niaoSu.value = res.sug_niaoSu
+  data.sug_erAn.value = res.sug_erAn
+  data.sug_KCL.value = res.sug_KCL
+  data.sug_K2SO4.value = res.sug_K2SO4
 }
 
 // 检查经纬度格式

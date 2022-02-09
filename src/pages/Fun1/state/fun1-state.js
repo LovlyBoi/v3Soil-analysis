@@ -14,6 +14,11 @@ const info = {
   sug_Olsen_P: ref(''),
   sug_Olsen_K: ref(''),
   sug_Organic_matter: ref(''),
+
+  sug_niaoSu: ref(''),
+  sug_erAn: ref(''),
+  sug_KCL: ref(''),
+  sug_K2SO4: ref(''),
 }
 
 const sugest_value = {
@@ -21,6 +26,10 @@ const sugest_value = {
   sug_Olsen_P: info.sug_Olsen_P,
   sug_Olsen_K: info.sug_Olsen_P,
   sug_Organic_matter: info.sug_Olsen_P,
+  sug_niaoSu: info.sug_niaoSu,
+  sug_erAn: info.sug_erAn,
+  sug_KCL: info.sug_KCL,
+  sug_K2SO4: info.sug_K2SO4,
 }
 
 // 本次查询的经纬度
@@ -29,6 +38,7 @@ let currJingwei = reactive({
   wei: '',
 })
 
+// 给第一个数据展示遍历item用的
 const measure_value = [
   {
     label: '乡/镇名称',

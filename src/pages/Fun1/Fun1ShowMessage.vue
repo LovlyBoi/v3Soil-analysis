@@ -15,7 +15,7 @@
       </el-descriptions>
 
       <el-button
-        v-if="userState.userInfo.role == 'expert'"
+        v-if="userState.userInfo.role === 'expert' || userState.userInfo.role === 'superAdmin'"
         size="small"
         type="primary"
         round
@@ -40,9 +40,6 @@
           </template>
           {{ sug_Olsen_P }}
         </el-descriptions-item>
-        <!-- <el-descriptions-item label="施 P2O5 量 kg/亩">
-          {{ sug_Olsen_P }}
-        </el-descriptions-item> -->
         <el-descriptions-item width="160px">
           <template #label>
             <span class="description-text">建议施 K</span
@@ -52,9 +49,25 @@
           </template>
           {{ sug_Olsen_K }}
         </el-descriptions-item>
-        <!-- <el-descriptions-item label="有机质的参考施肥量">
-          {{ sug_Organic_matter }}
-        </el-descriptions-item> -->
+        <el-descriptions-item width="160px">
+          <template #label>
+            <span class="description-text">折算 K</span
+            ><span class="description-text sub">2</span
+            ><span class="description-text">SO</span
+            ><span class="description-text sub">4</span
+            ><span class="description-text"> 量 (kg/亩)</span>
+          </template>
+          {{ sug_K2SO4 }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算 KCL 量 (kg/亩)" width="160px">
+          {{ sug_KCL }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算二胺量 (kg/亩)" width="160px">
+          {{ sug_erAn }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算尿素量 (kg/亩)" width="160px">
+          {{ sug_niaoSu }}
+        </el-descriptions-item>
       </el-descriptions>
     </div>
 
@@ -73,7 +86,7 @@
       </el-descriptions>
 
       <el-button
-        v-if="userState.userInfo.role == 'expert'"
+        v-if="userState.userInfo.role === 'expert' || userState.userInfo.role === 'superAdmin'"
         size="small"
         type="primary"
         round
@@ -98,9 +111,6 @@
           </template>
           {{ sug_Olsen_P }}
         </el-descriptions-item>
-        <!-- <el-descriptions-item label="施 P2O5 量 kg/亩">
-          {{ sug_Olsen_P }}
-        </el-descriptions-item> -->
         <el-descriptions-item width="160px">
           <template #label>
             <span class="description-text">建议施 K</span
@@ -110,9 +120,25 @@
           </template>
           {{ sug_Olsen_K }}
         </el-descriptions-item>
-        <!-- <el-descriptions-item label="有机质的参考施肥量">
-          {{ sug_Organic_matter }}
-        </el-descriptions-item> -->
+        <el-descriptions-item width="160px">
+          <template #label>
+            <span class="description-text">折算 K</span
+            ><span class="description-text sub">2</span
+            ><span class="description-text">SO</span
+            ><span class="description-text sub">4</span
+            ><span class="description-text"> 量 (kg/亩)</span>
+          </template>
+          {{ sug_K2SO4 }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算 KCL 量 (kg/亩)" width="160px">
+          {{ sug_KCL }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算二胺量 (kg/亩)" width="160px">
+          {{ sug_erAn }}
+        </el-descriptions-item>
+        <el-descriptions-item label="折算尿素量 (kg/亩)" width="160px">
+          {{ sug_niaoSu }}
+        </el-descriptions-item>
       </el-descriptions>
     </div>
   </div>
