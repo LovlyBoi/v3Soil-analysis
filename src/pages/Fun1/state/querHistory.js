@@ -1,7 +1,6 @@
 import { cache } from '@/utils/cache'
 
 class QueryRecord {
-
   constructor(queryData, responceData) {
     // 查询的数据
     this.cropName = queryData.cropName
@@ -37,11 +36,19 @@ class QueryRecord {
   }
 
   record(queryRecord) {
-    console.log(QueryRecord.queryHistory)
-    if (QueryRecord.queryHistory.length >= QueryRecord.maxHistoryNumber) {
-      QueryRecord.queryHistory.shift()
+    let len = QueryRecord.queryHistory.length
+    let maxLen = QueryRecord.maxHistoryNumber
+    if (len >= maxLen) {
+      // QueryRecord.queryHistory = QueryRecord.queryHistory.slice(
+      //   len - maxLen + 1,
+      //   len
+      // )
+      QueryRecord.queryHistory = [queryRecord].concat(
+        QueryRecord.queryHistory.slice(0, maxLen - 1)
+      )
+    } else {
+      QueryRecord.queryHistory = [queryRecord, ...QueryRecord.queryHistory]
     }
-    QueryRecord.queryHistory.push(queryRecord)
     this.cacheHistory()
   }
 
@@ -55,11 +62,31 @@ class QueryRecord {
 QueryRecord.queryHistory = []
 
 // 记录最大存储量
-QueryRecord.maxHistoryNumber = 3
+QueryRecord.maxHistoryNumber = 5
 
 // 初始化记录
-QueryRecord.init = function() {
+QueryRecord.init = function () {
   QueryRecord.queryHistory = cache.getCache('queryHistory') ?? []
+}
+
+QueryRecord.generateRequestData = function(queryRecord) {
+  return {
+    mea_organic_matter: queryRecord.mea_organic_matter,
+    mea_Olsen_K: queryRecord.mea_Olsen_K,
+    mea_Olsen_P: queryRecord.mea_Olsen_P,
+    min_Longitude: queryRecord.realPosition.longitude,
+    sug_ph: queryRecord.sug_ph,
+    sug_Olsen_K: queryRecord.sug_Olsen_K,
+    name_countryside: queryRecord.name_countryside,
+    sug_organic_matter: queryRecord.sug_organic_matter,
+    sug_Effective_N: queryRecord.sug_Effective_N,
+    min_Latitude: queryRecord.realPosition.latitude,
+    mea_ph: queryRecord.mea_ph,
+    isDirectMeasured: JSON.stringify(queryRecord.isDirectMeasured),
+    sug_Olsen_P: queryRecord.sug_Olsen_P,
+    name_village: queryRecord.name_village,
+    mea_Effective_N: queryRecord.mea_Effective_N,
+  }
 }
 
 export { QueryRecord }

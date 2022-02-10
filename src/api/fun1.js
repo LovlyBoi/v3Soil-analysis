@@ -70,4 +70,11 @@ function getCrops() {
   })
 }
 
-export { queryFun1, updateExpertSuggest, getCrops }
+function getExcelURL() {
+  return zwRequest.request({
+    method: 'GET',
+    url: 'http://120.79.189.55:8000/content1-2.0/suggestValues/excel',
+  })
+}
+
+export { queryFun1, updateExpertSuggest, getCrops, getExcelURL }

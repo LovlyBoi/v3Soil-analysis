@@ -155,7 +155,7 @@ export default {
       wei: '',
     })
 
-    // 挂载时初始化 QueryRecord
+    // 挂载时初始化历史记录
     QueryRecord.init()
 
     // 发送 fun1 查询

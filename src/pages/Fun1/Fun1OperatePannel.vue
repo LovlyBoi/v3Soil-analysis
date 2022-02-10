@@ -1,6 +1,8 @@
 <template>
   <div class="operate-pannel">
-    <el-button size="small" type="primary" round> 生成报告 </el-button>
+    <el-button size="small" type="primary" round @click="generateReport">
+      生成报告
+    </el-button>
     <el-button
       v-if="
         userState.userInfo.role === 'expert' ||
@@ -48,16 +50,19 @@
 <script>
 import { ref } from 'vue'
 import { ElMessageBox, ElLoading } from 'element-plus'
-import message from '../../hooks/useMessage'
-import { queryFun1, updateExpertSuggest } from '../../api'
+import message from '@/hooks/useMessage'
+import { queryFun1, updateExpertSuggest, getExcelURL } from '@/api'
 import { currJingwei, info, updateData } from './state/fun1-state'
 import { assignResult } from './utils'
-import { userState } from '../../hooks/useUserState'
+import { userState } from '@/hooks/useUserState'
+import { QueryRecord } from './state/querHistory'
 
 export default {
   props: ['crop'],
   setup(props) {
     const showUpdateTable = ref(false)
+
+    const excelURL = ref('http://120.79.189.55/1644482441133.xls')
 
     // 发送修改请求
     function updateSuggest(elementName, suggestValue) {
@@ -147,11 +152,30 @@ export default {
         })
     }
 
+    // 生成报告
+    async function generateReport() {
+      const requestData = QueryRecord.generateRequestData(
+        QueryRecord.queryHistory[0]
+      )
+      const {code, data, msg} = await getExcelURL(requestData)
+      console.log(data)
+      if (code !== 200) {
+        message('error', '生成报告失败')
+        console.log(msg)
+        return
+      }
+
+      excelURL.value = data.url
+      window.location.href = excelURL.value
+    }
+
     return {
       showUpdateTable,
+      excelURL,
       userState,
       updateData,
       handleEdit,
+      generateReport,
     }
   },
 }
