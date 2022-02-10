@@ -62,7 +62,7 @@ export default {
   setup(props) {
     const showUpdateTable = ref(false)
 
-    const excelURL = ref('http://120.79.189.55/1644482441133.xls')
+    const excelURL = ref('')
 
     // 发送修改请求
     function updateSuggest(elementName, suggestValue) {

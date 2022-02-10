@@ -70,10 +70,11 @@ function getCrops() {
   })
 }
 
-function getExcelURL() {
+function getExcelURL(data) {
   return zwRequest.request({
-    method: 'GET',
-    url: 'http://120.79.189.55:8000/content1-2.0/suggestValues/excel',
+    method: 'POST',
+    url: '/suggestValues/excel',
+    data
   })
 }
 

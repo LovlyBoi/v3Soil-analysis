@@ -70,7 +70,7 @@ QueryRecord.init = function () {
 }
 
 QueryRecord.generateRequestData = function(queryRecord) {
-  return {
+  const data = {
     mea_organic_matter: queryRecord.mea_organic_matter,
     mea_Olsen_K: queryRecord.mea_Olsen_K,
     mea_Olsen_P: queryRecord.mea_Olsen_P,
@@ -87,6 +87,7 @@ QueryRecord.generateRequestData = function(queryRecord) {
     name_village: queryRecord.name_village,
     mea_Effective_N: queryRecord.mea_Effective_N,
   }
+  return data
 }
 
 export { QueryRecord }

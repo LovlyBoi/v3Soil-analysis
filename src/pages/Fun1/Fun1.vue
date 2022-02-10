@@ -150,7 +150,7 @@ export default {
     const mapRef = ref(null)
 
     // 点击地图的经纬度
-    const jingwei = reactive({
+    const mapJingwei = reactive({
       jing: '',
       wei: '',
     })
@@ -161,11 +161,11 @@ export default {
     // 发送 fun1 查询
     function commitJingWei() {
       // 检查经纬度格式
-      if (!checkJingWeiRule(jingwei.jing, jingwei.wei)) {
+      if (!checkJingWeiRule(mapJingwei.jing, mapJingwei.wei)) {
         return
       }
 
-      if (isOutOfBound(jingwei.jing, jingwei.wei)) {
+      if (isOutOfBound(mapJingwei.jing, mapJingwei.wei)) {
         message('warning', '经纬度超出检测范围')
         return
       }
@@ -181,8 +181,8 @@ export default {
 
       // 发送查询请求
       const queryData = {
-        longitude: jingwei.jing + '',
-        latitude: jingwei.wei + '',
+        longitude: mapJingwei.jing + '',
+        latitude: mapJingwei.wei + '',
         cropName: crop.value,
       }
       queryFun1(queryData)
@@ -205,8 +205,8 @@ export default {
           currJingwei.jing = res.min_Longitude
           currJingwei.wei = res.min_Latitude
 
-          let wei = res.min_Latitude ?? jingwei.wei
-          let jing = res.min_Longitude ?? jingwei.jing
+          let wei = res.min_Latitude ?? mapJingwei.wei
+          let jing = res.min_Longitude ?? mapJingwei.jing
           // 在地图上加点
           addPoint(mapRef, jing, wei)
 
@@ -224,14 +224,14 @@ export default {
     }
 
     function mapClickHandle({ jing, wei }) {
-      jingwei.jing = jing
-      jingwei.wei = wei
+      mapJingwei.jing = jing
+      mapJingwei.wei = wei
     }
 
     return {
       mapRef,
       mapClickHandle,
-      jingwei,
+      mapJingwei,
       options,
       crop,
       commitJingWei,
