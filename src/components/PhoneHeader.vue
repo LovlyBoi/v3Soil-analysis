@@ -9,10 +9,10 @@
   <div class="nav-container">
     <ul>
       <li>
-        <el-button type="text" @click="toFun1">查成分</el-button>
+        <el-button type="text" style="color: #363636" @click="toFun1">查成分</el-button>
       </li>
       <li>
-        <el-button type="text" @click="toFun2">建议量</el-button>
+        <el-button type="text" style="color: #363636" @click="toFun2">建议量</el-button>
       </li>
     </ul>
   </div>
@@ -173,7 +173,7 @@ header {
 }
 
 .nav-container {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(182, 182, 182, 0.8);
   position: absolute;
   z-index: 9999;
   top: 60px;

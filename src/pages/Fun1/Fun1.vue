@@ -97,6 +97,9 @@
     <!-- 地图组件 -->
     <fun-1-map @mapClick="mapClickHandle" ref="mapRef"></fun-1-map>
 
+    <!-- 操作按钮组件 -->
+    <fun-1-operate-pannel :crop="crop"></fun-1-operate-pannel>
+
     <!-- 查询结果展示组件 -->
     <fun-1-show-message :crop="crop"></fun-1-show-message>
   </div>
@@ -105,6 +108,7 @@
 <script>
 import { ref, reactive } from 'vue'
 import Fun1Map from './Fun1Map.vue'
+import Fun1OperatePannel from './Fun1OperatePannel.vue'
 import Fun1ShowMessage from './Fun1ShowMessage.vue'
 import message from '../../hooks/useMessage'
 import { userState } from '../../hooks/useUserState'
@@ -124,6 +128,7 @@ export default {
   components: {
     Fun1Map,
     Fun1ShowMessage,
+    Fun1OperatePannel,
   },
   setup() {
     let crop = ref('')

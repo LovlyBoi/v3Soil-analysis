@@ -13,18 +13,6 @@
           {{ item.value.value }}
         </el-descriptions-item>
       </el-descriptions>
-
-      <el-button
-        v-if="userState.userInfo.role === 'expert' || userState.userInfo.role === 'superAdmin'"
-        size="small"
-        type="primary"
-        round
-        style="float: right"
-        @click="showUpdateTable = true"
-      >
-        修改数据
-      </el-button>
-
       <!-- 施肥建议 -->
       <el-descriptions title="施肥建议" :column="3" size="medium" border>
         <el-descriptions-item label="建议施 N 量 (kg/亩)" width="160px">
@@ -84,18 +72,6 @@
           {{ item.value.value }}
         </el-descriptions-item>
       </el-descriptions>
-
-      <el-button
-        v-if="userState.userInfo.role === 'expert' || userState.userInfo.role === 'superAdmin'"
-        size="small"
-        type="primary"
-        round
-        style="float: right"
-        @click="showUpdateTable = true"
-      >
-        修改数据
-      </el-button>
-
       <!-- 施肥建议 -->
       <el-descriptions title="施肥建议" :column="2" size="medium" border>
         <el-descriptions-item label="建议施 N 量 (kg/亩)" width="160px">
@@ -175,117 +151,18 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { ElMessageBox, ElLoading } from 'element-plus'
-import message from '../../hooks/useMessage'
-import { queryFun1, updateExpertSuggest } from '../../api'
 import {
   currJingwei,
-  info,
   sugest_value,
   updateData,
   measure_value,
 } from './state/fun1-state'
-import { assignResult } from './utils'
 import { userState } from '../../hooks/useUserState'
 
 export default {
   props: ['crop'],
-  setup(props) {
-    const showUpdateTable = ref(false)
-
-    // 发送修改请求
-    function updateSuggest(elementName, suggestValue) {
-      let data = {
-        // 本次查询的经纬度
-        jing: currJingwei.jing + '',
-        wei: currJingwei.wei + '',
-        elementName,
-        suggestValue: suggestValue + '',
-        cropName: props.crop,
-      }
-      return updateExpertSuggest(data)
-    }
-
-    // 修改数据函数
-    function handleEdit(index, row) {
-      // 当前查询经纬度为空
-      if (currJingwei.jing === '') {
-        message('warning', '还没有查询哦~')
-        return
-      }
-
-      let loading = null
-
-      // 检查格式，然后发送请求
-      ElMessageBox.prompt('请输入将要修改的值', '修改查询值', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        // 匹配小数正则
-        inputPattern: /^[+-]?(0|([1-9]\d*))(\.\d+)?$/,
-        inputErrorMessage: '格式错误',
-      })
-        .then(({ value }) => {
-          // 小于0，不允许
-          if (value < 0) {
-            message('error', '不允许输入负值')
-            return
-          }
-
-          // 加载loading
-          loading = ElLoading.service({
-            lock: true,
-            text: 'Loading',
-            background: 'rgba(0, 0, 0, 0.7)',
-          })
-
-          // 发送修改请求
-          return updateSuggest(row.elementName, value)
-        })
-        .then(
-          (data) => {
-            if (data.code !== 200) {
-              return Promise.reject(data)
-            }
-
-            // 重新获取数据
-            return queryFun1(
-              currJingwei.jing,
-              currJingwei.wei,
-              props.crop,
-              // 这次查询不需要成功提示
-              false,
-              // 也不需要遮罩
-              false
-            )
-          },
-          (reason) => {
-            message('error', '数据更新失败')
-            console.warn('数据更新失败', reason)
-          }
-        )
-        .then(
-          (data) => {
-            if (data.code !== 200) {
-              return Promise.reject(data)
-            }
-            // 拆包赋值，更新数据
-            let res = data.data
-            assignResult(info, res)
-          },
-          (reason) => {
-            message('error', '重新拉取数据失败')
-            console.warn('重新拉取数据失败', reason)
-          }
-        )
-        .finally(() => {
-          loading.close()
-        })
-    }
-
+  setup() {
     return {
-      showUpdateTable,
-      handleEdit,
       userState,
       ...sugest_value,
       measure_value,
