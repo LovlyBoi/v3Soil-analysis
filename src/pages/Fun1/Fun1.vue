@@ -155,6 +155,9 @@ export default {
       wei: '',
     })
 
+    // 挂载时初始化 QueryRecord
+    QueryRecord.init()
+
     // 发送 fun1 查询
     function commitJingWei() {
       // 检查经纬度格式
@@ -211,7 +214,7 @@ export default {
           assignResult(info, res)
 
           // 生成查询记录
-          console.log(new QueryRecord(queryData, res))
+          new QueryRecord(queryData, res)
         })
         // 失败
         .catch((reason) => {

@@ -31,9 +31,16 @@ class QueryRecord {
     this.sug_niaoSu = responceData.sug_niaoSu
     this.sug_organic_matter = responceData.sug_organic_matter
     this.sug_ph = responceData.sug_ph
+
+    // 新建一个record直接放进记录里
+    this.record(this)
   }
 
   record(queryRecord) {
+    console.log(QueryRecord.queryHistory)
+    if (QueryRecord.queryHistory.length >= QueryRecord.maxHistoryNumber) {
+      QueryRecord.queryHistory.shift()
+    }
     QueryRecord.queryHistory.push(queryRecord)
     this.cacheHistory()
   }
@@ -42,12 +49,17 @@ class QueryRecord {
     return cache.setCache('queryHistory', QueryRecord.queryHistory)
   }
 
-  getHistory() {
-    return QueryRecord.queryHistory = cache.getCache('queryHistory')
-  }
 }
 
 // static 语法报错，应该是 babel 配置低了，懒得调了
 QueryRecord.queryHistory = []
+
+// 记录最大存储量
+QueryRecord.maxHistoryNumber = 3
+
+// 初始化记录
+QueryRecord.init = function() {
+  QueryRecord.queryHistory = cache.getCache('queryHistory') ?? []
+}
 
 export { QueryRecord }
