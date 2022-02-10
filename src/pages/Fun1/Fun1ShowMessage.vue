@@ -118,36 +118,6 @@
       </el-descriptions>
     </div>
   </div>
-
-  <!-- 专家修改弹出窗口 -->
-  <el-drawer
-    v-model="showUpdateTable"
-    title="修改此次查询数据"
-    direction="ltr"
-    size="50%"
-  >
-    <el-table :data="updateData" style="width: 100%">
-      <el-table-column label="属性" min-width="70">
-        <template #default="scope">
-          <span style="margin-left: 10px">{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="参考值" min-width="70">
-        <template #default="scope">
-          <span style="margin-left: 10px">{{ scope.row.suggestValue }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作">
-        <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">
-            修改
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-drawer>
 </template>
 
 <script>

@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
+  parser: '@babel/eslint-parser',
   extends: ['eslint:recommended', 'plugin:vue/essential'],
   globals: {
     Atomics: 'readonly',
@@ -11,7 +12,7 @@ module.exports = {
     Buffer: true
   },
   parserOptions: {
-    ecmaVersion: 2020,
+    // ecmaVersion: 2020,
     sourceType: 'module',
   },
   plugins: ['vue'],

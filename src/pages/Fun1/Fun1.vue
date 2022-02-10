@@ -121,7 +121,7 @@ import {
   isOutOfBound,
   addPoint,
 } from './utils'
-import { info, currJingwei } from './state/fun1-state'
+import { info, currJingwei, QueryRecord } from './state/fun1-state'
 
 export default {
   name: 'Fun1',
@@ -177,7 +177,12 @@ export default {
       clearInfo(info, currJingwei)
 
       // 发送查询请求
-      queryFun1(jingwei.jing, jingwei.wei, crop.value)
+      const queryData = {
+        longitude: jingwei.jing + '',
+        latitude: jingwei.wei + '',
+        cropName: crop.value,
+      }
+      queryFun1(queryData)
         // 成功
         .then((data) => {
           if (data.code !== 200) {
@@ -185,7 +190,7 @@ export default {
           }
           let res = data.data
           // 不是直接测量点，什么都不做
-          if (res.isDirectMeasured === 'false') {
+          if (!JSON.parse(res.isDirectMeasured)) {
             // message(
             //   "warning",
             //   "暂无该地点的参考值，已为您寻找最近的参考点",
@@ -204,6 +209,9 @@ export default {
 
           // 数据赋值
           assignResult(info, res)
+
+          // 生成查询记录
+          console.log(new QueryRecord(queryData, res))
         })
         // 失败
         .catch((reason) => {

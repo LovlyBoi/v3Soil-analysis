@@ -1,4 +1,5 @@
 import { ref, reactive } from 'vue'
+import { QueryRecord } from './querHistory'
 
 const info = {
   name_countryside: ref(''),
@@ -98,4 +99,11 @@ const updateData = ref([
   },
 ])
 
-export { info, sugest_value, updateData, currJingwei, measure_value }
+export {
+  info,
+  sugest_value,
+  updateData,
+  currJingwei,
+  measure_value,
+  QueryRecord,
+}

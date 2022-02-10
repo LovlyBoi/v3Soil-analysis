@@ -2,15 +2,16 @@ import { zwRequest } from '../network'
 import message from '../hooks/useMessage'
 
 // fun1查询
-function queryFun1(jing, wei, crop, showMessage = true, showLoading = true) {
+function queryFun1(data, showMessage = true, showLoading = true) {
   const config = {
     method: 'POST',
     url: '/fun1',
-    data: {
-      longitude: jing + '',
-      latitude: wei + '',
-      cropName: crop,
-    },
+    // data: {
+    //   longitude: jing + '',
+    //   latitude: wei + '',
+    //   cropName: crop,
+    // },
+    data,
   }
   if (showMessage) {
     config.interceptors = {
