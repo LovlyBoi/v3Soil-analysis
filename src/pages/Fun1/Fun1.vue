@@ -12,7 +12,7 @@
               name="jingdu"
               placeholder="请输入经度"
               type="text"
-              v-model.trim="jingwei.jing"
+              v-model.trim="mapJingwei.jing"
               clearable
             />
           </div>
@@ -25,7 +25,7 @@
               name="weidu"
               placeholder="请输入纬度"
               type="text"
-              v-model.trim="jingwei.wei"
+              v-model.trim="mapJingwei.wei"
               clearable
             />
           </div>
@@ -60,7 +60,7 @@
               name="jingdu"
               placeholder="请输入经度"
               type="text"
-              v-model.trim="jingwei.jing"
+              v-model.trim="mapJingwei.jing"
               clearable
             />
           </div>
@@ -73,7 +73,7 @@
               name="weidu"
               placeholder="请输入纬度"
               type="text"
-              v-model.trim="jingwei.wei"
+              v-model.trim="mapJingwei.wei"
               clearable
             />
           </div>
